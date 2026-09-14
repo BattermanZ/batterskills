@@ -1,10 +1,10 @@
 ---
-name: ask-matt
-description: Ask which skill or flow fits your situation. A router over the skills in this repo.
+name: ask-me
+description: Ask which skill or flow fits your situation. A router over the batterskills catalogue.
 disable-model-invocation: true
 ---
 
-# Ask Matt
+# Ask me
 
 You don't remember every skill, so ask.
 
@@ -75,7 +75,7 @@ Read [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md) for the ordered tree — the fiv
 Off the main flow entirely.
 
 - **`/grill-me`** — the same relentless interview as `/grill-with-docs`, but **stateless**: it saves nothing locally and builds no `CONTEXT.md`. Reach for it when you are **not working in a working directory** — sharpening a plan, a design, a piece of writing, anything with no repo under it. If you are in a working directory, use `/grill-with-docs` instead: it runs the same interview and leaves a paper trail, so it is strictly the better one.
-- **`/grilling`** — the interview primitive itself: rounds, the frontier, facts are the agent's job and decisions are yours. `/grill-me` and `/grill-with-docs` are the two named ways in, and `/triage`, `/wayfinder` and `/improve-codebase-architecture` all run it internally. Reach for it directly only when you want the interview with no wrapper around it.
+- **`/grilling`** — the interview primitive itself: one question at a time along the frontier, facts are the agent's job and decisions are yours. `/grill-me` and `/grill-with-docs` are the two named ways in, and `/triage`, `/wayfinder` and `/improve-codebase-architecture` all run it internally. Reach for it directly only when you want the interview with no wrapper around it.
 - **`/resolving-merge-conflicts`** — work an in-progress merge or rebase conflict hunk by hunk, resolving by **intent** traced to each side's primary source rather than by picking lines, then finish the operation. It never runs `--abort`. Standalone and off every flow: reach for it when you are already mid-conflict.
 - **`/prototype`** — a small, throwaway program that answers one design question: does this state model feel right, or what should this UI look like. Throwaway is a constraint on how the code is written, not a promise to destroy it: the answer folds into the real code, and the prototype itself is kept as a **primary source** on a `prototype/<name>` branch out of main, pointed at from the implementation issue. It's the detour in step 2 of the main flow, but reach for it any time a design question is hard to settle on paper.
 - **`/research`** — delegate reading legwork to a **background agent**: it investigates a question against **primary sources**, then leaves a cited Markdown file in the repo. Keep working while it reads. The file it produces is something to take *into* the main flow at `/grill-with-docs` — research feeds the thinking, it doesn't replace it.
@@ -87,4 +87,13 @@ Off the main flow entirely.
 
 ## Precondition
 
-**`/setup-matt-pocock-skills`** — run before your first engineering flow to configure the issue tracker, triage labels, and doc layout the other skills assume. Custom issue trackers work for the generic flows; this fork's personalized `/implement` workflow uses GitHub through `gh`.
+The engineering flows assume the target repo declares its issue tracker and triage labels in `docs/agents/issue-tracker.md`. When that file is missing, ask which tracker to use before publishing tickets. The personalized `/implement` workflow uses GitHub through `gh`.
+
+## Beyond engineering
+
+The catalogue is wider than the engineering flow. Routes into the other trees:
+
+- **Writing anything** → the `unslop` rules apply to all prose, always (they're injected by hooks, don't invoke them by hand). For software docs, **`/documentation-writer`** (Diátaxis); for a project README, **`/writing-project-readmes`**.
+- **Vault work** → **`/hatchdoor`** for any BatterNotes read/write, **`/clip-web-article`** to archive an article with its images, **`/deep-research`** for a multi-agent research dossier landed in the vault, **`/wayfinder-vault-tracker`** when a `/wayfinder` effort lives in the vault instead of a repo tracker. `effort-store` and `effort-store-vault` are plumbing other skills load, not entry points.
+- **Buying something** → **`/purchase-advisor`** to decide what to buy, **`/batterdeals`** to hunt discount codes for a shop.
+- **Building UI** → **`/frontend-design`** for visual direction that doesn't read as templated defaults.

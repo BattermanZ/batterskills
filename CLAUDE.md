@@ -1,25 +1,27 @@
-Skills are organized into bucket folders under `skills/`:
+This is batterskills, a personal agent-skills collection consumed by symlink and by checkout on other hosts. A push to `main` is what propagates a change beyond this machine.
 
-- `engineering/`: daily code work
-- `productivity/`: daily non-code workflow tools
-- `misc/`: kept around but rarely used, not promoted
-- `in-progress/`: beta: public on purpose, feedback wanted, not shipped in the plugin
-- `deprecated/`: no longer used
+## Layout rules
 
-Every skill in `engineering/` or `productivity/` (the **promoted** buckets) must have a reference in the top-level `README.md` and an entry in `.claude-plugin/plugin.json`'s `skills` array (the Claude Code plugin ships exactly the promoted set). Skills in `misc/`, `in-progress/`, and `deprecated/` must not appear in either.
+Skills live under `skills/<provenance>/`, where the first level says where a skill came from:
 
-Install commands are copied verbatim from [.agents/install-block.md](./.agents/install-block.md). `.claude-plugin/marketplace.json` makes the repo its own single-plugin marketplace (a fallback the install block explains, not the documented route). Run `claude plugin validate . --strict` after touching either manifest. Why a Claude plugin but not (yet) a Codex one lives in [.agents/adr/0002-ship-as-a-claude-code-plugin.md](./.agents/adr/0002-ship-as-a-claude-code-plugin.md).
+- `battermanz/`: original work, organised by domain (`vault/`, `writing/`, `personal/`, `meta/`). A new skill goes in the domain it fits; add a new domain folder only when none fits.
+- `mattpocock/`, `pstack/`, `anthropic/`: third-party trees. Each mirrors its author's own repo layout so porting stays a clean diff, and each has a README at its root naming the author, source URL, license, and sync point. Keep that README accurate when porting.
 
-Each skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`.
+A third-party import goes in its author's tree (create one for a new author), keeps the author's license file, and records the source and copy date (a `SOURCE.md` in the skill dir, as `pstack/unslop` does). Adjusting an imported skill in place is fine; the git history against the import commit is the record of divergence.
 
-Each bucket folder has a `README.md` that lists every skill in the bucket with a one-line description, with the skill name linked to its `SKILL.md`. The promoted buckets' `README.md`s and the top-level `README.md` group entries into **User-invoked** and **Model-invoked**; non-promoted bucket `README.md`s (`misc/`, `in-progress/`) use a flat list.
+Porting upstream changes is manual and per skill: diff the author's repo against their tree here. Never merge an upstream wholesale; the `upstream` git remote exists only as a reference for cherry-picking.
 
-Skills in `engineering/` and `productivity/` also have a human-facing docs page at `docs/<bucket>/<skill-name>.md` (the docs tree mirrors those two bucket folders under `skills/`). The published URL is `https://aihero.dev/skills-<skill-name>` regardless of bucket: the docs path is repo organisation only. When you add, rename, or change the behaviour of a skill in `engineering/` or `productivity/`, create or re-sync its docs page following [.agents/writing-docs.md](./.agents/writing-docs.md). A finished page carries four sections: **What it does**, **When to reach for it**, **Common questions**, and **It's working if**. `writing-docs.md` holds the template, the section order, and where to hunt for the questions. Skills in the non-promoted buckets (`misc/`, `in-progress/`, `deprecated/`) get **no** docs page.
+Skill directory names must be unique across the whole tree: `link-skills.sh` links flat by basename.
 
-Every `SKILL.md` is either user-invoked (`disable-model-invocation: true` plus `policy.allow_implicit_invocation: false` in `agents/openai.yaml`, reachable only by the human) or model-invoked (model- or user-reachable). See [.agents/invocation.md](./.agents/invocation.md).
+## After changing skills
 
-[`ask-matt`](./skills/engineering/ask-matt/SKILL.md) is the router that maps every user-reachable skill and how they relate. The same trigger that re-syncs a docs page applies to it: whenever you add, rename, remove, or change how a user-reachable skill fits the flows, re-read `ask-matt`'s `SKILL.md` and update it so the map stays accurate: a new skill it never mentions, or a stale one it still routes to, is a router that lies.
+- Run `scripts/link-skills.sh` to refresh the harness symlinks (`~/.claude/skills`, `~/.agents/skills`). It skips `misc/` on purpose and never prunes, so after a rename or removal, delete the dangling links it leaves behind.
+- Run `scripts/update-readme-catalogue.py` to refresh the README catalogue.
+- Keep each bucket README (where the author's layout has them) in step with the bucket's contents.
+- `battermanz/meta/ask-me` is the router over the user-reachable skills: when a skill is added, renamed, removed, or changes how it fits the flows, update it, since a router that lies is worse than none.
 
-To (re)link every skill outside `deprecated/` and `misc/` into the local harness skill directories (`~/.claude/skills`, `~/.agents/skills`), run `scripts/link-skills.sh`. Each entry is a symlink into this repo, so a `git pull` keeps installed skills current; re-run the script after adding, removing, or renaming a skill.
+Every `SKILL.md` is either user-invoked (`disable-model-invocation: true` plus `policy.allow_implicit_invocation: false` in `agents/openai.yaml`) or model-invoked.
 
-No em-dashes anywhere in this repo's prose (`SKILL.md` files, docs, `README.md`, `CHANGELOG.md`, ADRs, changesets, code comments). Where a sentence reaches for one, rewrite it instead with a comma, colon, period, parentheses, or a conjunction, whichever the sentence actually wants; never do a blind character substitution.
+There is no plugin, marketplace, changesets, or release machinery here, deliberately; do not reintroduce any of it.
+
+No em-dashes anywhere in this repo's prose. Where a sentence reaches for one, rewrite it with a comma, colon, period, parentheses, or a conjunction, whichever the sentence actually wants.
