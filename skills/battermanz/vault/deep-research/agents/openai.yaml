@@ -1,0 +1,5 @@
+interface:
+  display_name: "deep-research"
+  short_description: "Multi-agent research dossier landed in the vault"
+policy:
+  allow_implicit_invocation: false

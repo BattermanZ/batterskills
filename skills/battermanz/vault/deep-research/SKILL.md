@@ -3,6 +3,8 @@ name: deep-research
 description: Research a question deeply with a coordinator and parallel agents, landing the whole dossier in the vault.
 disable-model-invocation: true
 platforms: [linux, macos, windows]
+metadata:
+  version: "1.2.0"
 ---
 
 # deep-research

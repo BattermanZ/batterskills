@@ -1,0 +1,5 @@
+interface:
+  display_name: "price-hunt"
+  short_description: "Find the best landed price for a chosen product"
+policy:
+  allow_implicit_invocation: false

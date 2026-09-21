@@ -22,6 +22,8 @@ Skill directory names must be unique across the whole tree: `link-skills.sh` lin
 
 Every `SKILL.md` is either user-invoked (`disable-model-invocation: true` plus `policy.allow_implicit_invocation: false` in `agents/openai.yaml`) or model-invoked.
 
+A skill carries a version once something downstream records which version produced it, or once its shape changes enough that an old output needs explaining. The version lives in frontmatter as `metadata.version`, a quoted string (`"1.2.0"`), per the Agent Skills spec. Frontmatter never reaches the model when a skill runs, so a skill that stamps its version into what it writes also carries `Version 1.2.0.` under its H1; bump both together. Bump the minor for a new rule or required output, the major when the flow itself is reshaped. Git log carries what changed and why, so no skill holds a changelog.
+
 There is no plugin, marketplace, changesets, or release machinery here, deliberately; do not reintroduce any of it.
 
 No em-dashes anywhere in this repo's prose. Where a sentence reaches for one, rewrite it with a comma, colon, period, parentheses, or a conjunction, whichever the sentence actually wants.

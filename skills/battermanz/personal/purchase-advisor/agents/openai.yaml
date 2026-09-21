@@ -1,0 +1,5 @@
+interface:
+  display_name: "purchase-advisor"
+  short_description: "Decide what to buy and recommend one"
+policy:
+  allow_implicit_invocation: false

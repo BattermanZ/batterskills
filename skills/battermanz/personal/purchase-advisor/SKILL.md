@@ -1,12 +1,14 @@
 ---
 name: purchase-advisor
-description: Decide what to buy: research the category, interview you, hunt new and second-hand, recommend one.
+description: "Decide what to buy: research the category, interview you, hunt new and second-hand, recommend one."
 disable-model-invocation: true
+metadata:
+  version: "1.2.0"
 ---
 
 # purchase-advisor
 
-Version 1.1.0.
+Version 1.2.0.
 
 Someone wants to buy a specific kind of product (a TV, a stand mixer, a computer) and does not yet know which one. The run moves through scan, interview, constraint cost, hunt, verify, recommend, and ends with one recommendation they can act on today. Choosing is the job: a run that hands back a neutral pile of candidates has pushed the hardest part onto the user.
 
@@ -79,7 +81,7 @@ Done when every hunt agent's report is back with each candidate carrying its pri
 
 ## 5. Verify
 
-The **shortlist** is the five or six candidates you would actually put in front of the user. Before they see anything, fetch each shortlisted candidate's own page and confirm three things: the listing is alive, the price, and availability at the location. A dead listing is dropped and noted; a drifted price is reported at the live number. Delivery cost and stock depth are part of the price. The hunt agent's report is claims; only what you fetched yourself is measured. Second-hand listings die within days, and recommending a vanished one is the classic failure this step exists to catch.
+The **shortlist** is the five or six candidates you would actually put in front of the user. Before they see anything, fetch each shortlisted candidate's own page and confirm three things: the listing is alive, the price, and availability at the location. A dead listing is dropped and noted; a drifted price is reported at the live number. Delivery cost and stock depth are part of the price, and so is anything the Requirements need that the box does not contain: read what each candidate ships with, and price the missing piece at that seller, so candidates are compared as the **baskets** the user would actually buy. The hunt agent's report is claims; only what you fetched yourself is measured. Second-hand listings die within days, and recommending a vanished one is the classic failure this step exists to catch.
 
 Verify the load-bearing spec claims at the maker's own document too, not at the shop's bullet list, and treat a clean negative with suspicion: a keyword probe that finds nothing on a page you have not confirmed is the real document proves nothing. Manual-aggregator sites serve plausible "manual not found" templates that answer questions about other products entirely. Confirm you are holding the document before you trust its silence.
 
@@ -97,6 +99,6 @@ Done when every shortlisted candidate has a fetched verdict (alive, price, avail
 
 If the recommendation changes later in the same run, rewrite that pass's section whole, ranking table included, rather than swapping the winning claim and leaving the rest. **update**'s dated-section rule protects a previous run's reasoning, not a paragraph you wrote twenty minutes ago. Re-read the section after the edit: a note that recommends one product and ranks another first is worse than no note. Record the reason the pick moved, especially when the cause was your own criterion rather than the user's.
 
-**register** the effort. Then, when the winner is a new-retail buy, tell the user that `/batterdeals` on the product URL hunts the discount before checkout; it is user-invoked, so they type it. A second-hand listing gets no code hunt; the equivalent move there is negotiating, which stays with the human.
+**register** the effort. Then, when the winner is a new-retail buy, give its article number or EAN and tell the user that `/price-hunt` on it finds the cheapest trustworthy seller and hands on to `/batterdeals` for the discount; both are user-invoked, so they type them. A second-hand listing gets neither; the equivalent move there is negotiating, which stays with the human.
 
 Done when the Shortlist note is written and internally consistent, the effort registered, and the chat carries the same recommendation.

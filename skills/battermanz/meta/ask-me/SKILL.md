@@ -95,5 +95,5 @@ The catalogue is wider than the engineering flow. Routes into the other trees:
 
 - **Writing anything** → the `unslop` rules apply to all prose, always (they're injected by hooks, don't invoke them by hand). For software docs, **`/documentation-writer`** (Diátaxis); for a project README, **`/writing-project-readmes`**.
 - **Vault work** → **`/hatchdoor`** for any BatterNotes read/write, **`/clip-web-article`** to archive an article with its images, **`/deep-research`** for a multi-agent research dossier landed in the vault, **`/wayfinder-vault-tracker`** when a `/wayfinder` effort lives in the vault instead of a repo tracker. `effort-store` and `effort-store-vault` are plumbing other skills load, not entry points.
-- **Buying something** → **`/purchase-advisor`** to decide what to buy, **`/batterdeals`** to hunt discount codes for a shop.
+- **Buying something** → **`/purchase-advisor`** to decide what to buy, **`/price-hunt`** for the cheapest trustworthy seller of something already chosen, **`/batterdeals`** to hunt discount codes for that shop. They chain in that order; join at whichever step you are already at.
 - **Building UI** → **`/frontend-design`** for visual direction that doesn't read as templated defaults.
