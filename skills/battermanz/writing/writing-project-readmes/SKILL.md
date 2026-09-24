@@ -1,6 +1,8 @@
 ---
 name: writing-project-readmes
 description: Use when creating, rewriting, auditing, or improving a README for a self-hosted app, developer tool, CLI, service, or library, or when the user asks whether a README is good or how to make one better.
+metadata:
+  version: "1.0.0"
 ---
 
 # Writing Project READMEs

@@ -1,6 +1,8 @@
 ---
 name: effort-store
 description: Durable cross-session storage for a skill's effort notes. Reach it when a consumer skill says to load the effort store, or to find, open, write, update or register an effort.
+metadata:
+  version: "1.0.0"
 ---
 
 # effort-store
@@ -18,11 +20,11 @@ An effort's name is the subject in a few words, no date: `Stand mixer`, not `202
 
 ## Operations
 
-- **find** — search the consumer's root for an effort on this subject. Return its notes, or nothing. Consumers call this before planning, so a re-run is recognised instead of restarted.
-- **open** — create the effort's container.
-- **write** — create a note inside the effort. Every note records the date, the producing skill and its version, so the effort stays legible a year later.
-- **update** — every change to an existing note. Earlier runs stay readable in place: a fresh pass adds a dated section rather than replacing what an old one wrote.
-- **register** — after the last write: link the effort into whatever index the backend keeps, and report every note written, each one clickable.
+- **find**: search the consumer's root for an effort on this subject. Return its notes, or nothing. Consumers call this before planning, so a re-run is recognised instead of restarted.
+- **open**: create the effort's container.
+- **write**: create a note inside the effort. Every note records the date, the producing skill and its version, so the effort stays legible a year later.
+- **update**: every change to an existing note. Earlier runs stay readable in place: a fresh pass adds a dated section rather than replacing what an old one wrote.
+- **register**: after the last write: link the effort into whatever index the backend keeps, and report every note written, each one clickable.
 
 Two rules bind every backend:
 

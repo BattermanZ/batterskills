@@ -21,7 +21,7 @@ Inspect the worktree and branch before claiming the work. Require a clean worktr
 - **The chosen issue is unassigned:** assign it to the authenticated GitHub user with `gh issue edit --add-assignee @me` before editing code, then fetch it again and verify the assignment succeeded.
 - **A spec with no GitHub issue was supplied:** continue without GitHub issue actions.
 
-**Read the ledger whole** — the body and every comment (`gh issue view <number> --comments`). The brief specifying the work, and the decisions that reshaped it, are often comments, so an issue read from its body alone can miss the contract entirely.
+**Read the ledger whole**: the body and every comment (`gh issue view <number> --comments`). The brief specifying the work, and the decisions that reshaped it, are often comments, so an issue read from its body alone can miss the contract entirely.
 
 GitHub issue work requires an authenticated `gh` session and an unambiguous GitHub repository. If either is unavailable, stop before claiming or changing anything. Do not substitute another issue tracker.
 

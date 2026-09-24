@@ -22,13 +22,13 @@ curl -sS -H 'Accept: application/json' \
 
 The endpoint returns a JSON array of shipment objects. Inspect:
 
-- `barcode` — DHL internal barcode.
-- `barcodes` — aliases, including the user-facing tracking code.
-- `events[]` — event timeline; each event has `category`, `status`, `timestamp`, and often `localTimestamp`.
-- `deliveredAt` — actual delivery timestamp when delivered.
-- `returnedAt` — return completion timestamp when it is a return shipment.
-- `type` — e.g. `RETOUR` for a return.
-- `isReturn` — boolean; if true, describe the result as delivered/returned back to shipper, not simply delivered to recipient.
+- `barcode`: DHL internal barcode.
+- `barcodes`: aliases, including the user-facing tracking code.
+- `events[]`: event timeline; each event has `category`, `status`, `timestamp`, and often `localTimestamp`.
+- `deliveredAt`: actual delivery timestamp when delivered.
+- `returnedAt`: return completion timestamp when it is a return shipment.
+- `type`: e.g. `RETOUR` for a return.
+- `isReturn`: boolean; if true, describe the result as delivered/returned back to shipper, not simply delivered to recipient.
 
 ## Vault update pattern
 

@@ -1,6 +1,6 @@
 # Matt Pocock's skills
 
-Author: Matt Pocock — <https://github.com/mattpocock/skills>
+Author: Matt Pocock, <https://github.com/mattpocock/skills>
 License: MIT (see [LICENSE](./LICENSE), © 2026 Matt Pocock)
 
 This tree mirrors the bucket layout of his repo (`engineering/`, `productivity/`, `misc/`) so that porting stays a clean diff: compare his repo against this tree, take what's worth taking. Nothing merges automatically.

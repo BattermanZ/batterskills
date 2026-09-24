@@ -1,13 +1,15 @@
 ---
 name: clip-web-article
-description: Use when asked to save, clip, transcribe, or archive a web article (news story, blog post, etc.) into the vault — especially when the article has images that need to be preserved in place. NOT for general vault note-taking (that's the hatchdoor skill).
+description: Use when asked to save, clip, transcribe, or archive a web article (news story, blog post, etc.) into the vault, especially when the article has images that need to be preserved in place. NOT for general vault note-taking (that's the hatchdoor skill).
+metadata:
+  version: "2.1.0"
 ---
 
 # Clipping a Web Article to the Vault
 
 Turn an article URL into a vault note holding the article's text and its editorial
 images, stored locally rather than hotlinked. Builds on the [[hatchdoor]] skill for
-the vault mechanics — read that skill for filing decisions, tagging, and the
+the vault mechanics: read that skill for filing decisions, tagging, and the
 image-import standard; this skill covers the article-specific parts: extraction,
 image triage, and the upload sequence.
 
@@ -27,7 +29,7 @@ with a hash to chain.
    is complete. A body that jumps from the intro straight to a later section, or
    that has fewer headings than the page, is the tell.
 2. **Get the images from the page HTML.** Do not rely on Tavily's
-   `include_images` — it returns nothing at all on some sites (wired.com,
+   `include_images`: it returns nothing at all on some sites (wired.com,
    2026-09-09), so treat an empty image list as "wrong tool", not "no images".
    Fetch the page and walk it yourself:
 
@@ -78,7 +80,7 @@ with a hash to chain.
    kebab-case filename, then:
    - `get_attachment_import_config` for the Vault. It reports the live methods,
      size limits and allowed extensions, and it is authoritative. **It is not a
-     staging folder** — the sftp staging bridge was decommissioned 2026-08-29.
+     staging folder**: the sftp staging bridge was decommissioned 2026-08-29.
    - Upload with the **HTTP multipart endpoint** (the default, ≤10 MB): `POST
      /api/v1/vaults/<vault_id>/attachments`, multipart fields
      `target_relative_path` and `file`, `Authorization: Bearer <token>` where the
@@ -90,7 +92,7 @@ with a hash to chain.
    heading structure, the byline, and each image in the position it held in the
    source, with its caption as an italic line underneath. Reference images by a
    path **relative to the note's folder** (`<article-slug>/<name>.jpg`), in plain
-   Markdown `![alt](path)` form — never a wikilink embed, never URL-encoded. The
+   Markdown `![alt](path)` form, never a wikilink embed, never URL-encoded. The
    note's `# H1` must match its filename, so the article's own headline becomes the
    first sub-heading rather than the H1.
 7. **Verify the refs resolve.** `list_note_attachments` on the new note should
@@ -116,5 +118,5 @@ with a hash to chain.
   right.
 
 ## Related
-- [[hatchdoor]] — vault operating rules, filing router, image-import
+- [[hatchdoor]]: vault operating rules, filing router, image-import
   standard, git-sync discipline

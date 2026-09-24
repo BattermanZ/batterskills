@@ -2,6 +2,8 @@
 name: batterdeals
 description: Find and live-test discount codes for an online shop, and report the shop's own savings (sale price, price policies, newsletter discount).
 disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 
 # batterdeals

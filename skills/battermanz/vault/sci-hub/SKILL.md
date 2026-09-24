@@ -2,6 +2,8 @@
 name: sci-hub
 description: Obtain full text for paywalled or bot-blocked papers and guidance documents, landing raw files in a scratchpad. Reach for it when a source is paywalled, captcha-walled, behind a 401/404, or listed in a "sources to obtain" or "could not fetch" table, and before declaring a source unreadable.
 platforms: [linux, macos]
+metadata:
+  version: "1.0.0"
 ---
 
 # sci-hub

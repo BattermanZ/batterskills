@@ -48,7 +48,7 @@ def main() -> int:
         for skill_md in sorted(tree.rglob("SKILL.md")):
             rel = skill_md.parent.relative_to(REPO)
             name = skill_md.parent.name
-            lines.append(f"- **[{name}](./{rel}/SKILL.md)** — {description(skill_md)}")
+            lines.append(f"- **[{name}](./{rel}/SKILL.md)**: {description(skill_md)}")
         lines.append("")
 
     readme = README.read_text(encoding="utf-8")
