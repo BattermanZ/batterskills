@@ -26,4 +26,6 @@ Every skill under `battermanz/` carries a version, starting at `"1.0.0"` in the 
 
 There is no plugin, marketplace, changesets, or release machinery here, deliberately; do not reintroduce any of it.
 
-No em-dashes anywhere in this repo's prose. Where a sentence reaches for one, rewrite it with a comma, colon, period, parentheses, or a conjunction, whichever the sentence actually wants.
+No em-dashes anywhere in this repo's prose. Where a sentence reaches for one, rewrite it with a comma, colon, period, parentheses, or a conjunction, whichever the sentence actually wants. A colon that lands in an unquoted `description:` breaks strict YAML, so quote that description.
+
+`.githooks/pre-commit` refuses a commit that adds an em-dash or leaves a `battermanz/` skill without `metadata.version`. Enable it once per clone with `git config core.hooksPath .githooks`; a clone does not carry hook settings.

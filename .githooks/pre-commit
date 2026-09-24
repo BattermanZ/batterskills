@@ -1,0 +1,22 @@
+#!/bin/sh
+# Enforces two CLAUDE.md rules at commit time, on staged content only:
+# no em-dashes anywhere, and a metadata.version on every battermanz/ skill.
+# Enable once per clone: git config core.hooksPath .githooks
+fail=0
+emdash=$(printf '\342\200\224')
+
+added=$(git diff --cached -U0 --no-color | grep -n '^+[^+]' | grep -F "$emdash")
+if [ -n "$added" ]; then
+	echo "pre-commit: staged lines add an em-dash (CLAUDE.md forbids them):" >&2
+	git diff --cached --name-only -z | xargs -0 -r git grep --cached -n -F "$emdash" -- >&2
+	fail=1
+fi
+
+for f in $(git diff --cached --name-only --diff-filter=ACMR -- 'skills/battermanz/*/*/SKILL.md'); do
+	if ! git show ":$f" | awk 'NR==1 && $0!="---"{exit 1} NR>1 && $0=="---"{exit} /^  version: "[0-9]+\.[0-9]+\.[0-9]+"$/{found=1} END{exit !found}'; then
+		echo "pre-commit: $f has no metadata.version in its frontmatter (see CLAUDE.md)." >&2
+		fail=1
+	fi
+done
+
+exit $fail
