@@ -7,7 +7,7 @@ metadata:
 
 # Kamosu: the recipe library
 
-Kamosu is Aurélien's self-hosted recipe app, and `recipes.battercloud.cc` is the household's only copy of the library. There is no staging: every write lands in the recipes he cooks from. Treat each save as **production**.
+Kamosu is Aurélien's self-hosted recipe app, and its one instance is the household's only copy of the library. `get_public_address` gives its address, called `<public address>` below. There is no staging: every write lands in the recipes he cooks from. Treat each save as **production**.
 
 The running record of cleanup work, decisions and what is still open is the vault note **Kamosu - Recipe library cleanup** (`personal/projects/kamosu/`, reached through the `hatchdoor` skill). Read its "Still to do" and its bug list before starting, and update it before finishing.
 
@@ -26,7 +26,7 @@ The running record of cleanup work, decisions and what is still open is the vaul
 - **Search the shelf before adding a recipe**, for its main ingredients and its dish type. Link anything close with `set_related_recipe`, and bring a likely duplicate to Aurélien before writing.
 - **Deleting a recipe is Aurélien's call**, asked recipe by recipe.
 - **Choices are his.** Bring options with a recommendation, one question at a time, and wait.
-- **Link every recipe you create or edit** in your reply, with the recipe's title as the link text: `[Gochujang chicken orzo](https://recipes.battercloud.cc/recipes/b_c54e61034c7d5ad8)`, never a bare URL. The address is `<public address>/recipes/<branch_id>`. `get_public_address` gives the address (`https://recipes.battercloud.cc`), and the web app's recipe page is `/recipes/[branchId]`. No tool returns this link itself, so build it.
+- **Link every recipe you create or edit** in your reply, with the recipe's title as the link text: `[Gochujang chicken orzo](<public address>/recipes/b_c54e61034c7d5ad8)`, never a bare URL. The web app's recipe page is `/recipes/[branchId]`. No tool returns this link itself, so build it.
 - **Show a change before making it** whenever it touches more than the one recipe he named: old and new side by side, applied only on his word.
 
 ## Editing mechanics
@@ -36,7 +36,7 @@ These belong in Kamosu's own MCP instructions (#168). When the server states the
 - **`edit_recipe` for every change.** It takes only the fields that change. `ingredients` and `steps` are each replaced whole, so changing one line means sending that whole list and leaving the other out. `save_recipe_version` replaces the entire recipe: a field left out is erased.
 - **Every edit carries a `change_note`.** Edits within roughly an hour of the last save on the same recipe collapse into that Version, and a collapsed edit without a note erases the one already there (#165). A note-only edit saves nothing, so a lost note stays lost.
 - **One recipe, one edit.** Gather everything a recipe needs, then send it once: a second pass inside the hour folds into the first and rewrites its note.
-- **Photos go up out of band.** `POST https://recipes.battercloud.cc/api/photographs` takes the raw image as the body with the kamosu MCP server's own `Authorization` header, read from `~/.claude.json` (`projects["<cwd>"].mcpServers.kamosu.headers`) inside the script, never printed. Set a plain `User-Agent` (`curl/8.5`); Python's default draws a 403. The answer's `result.photograph_id` goes in `steps[].photo` or `main_photo`. `upload_photograph` takes base64 through the conversation, about 100 KB of context a photo: keep it for a single picture.
+- **Photos go up out of band.** `POST <public address>/api/photographs` takes the raw image as the body with the kamosu MCP server's own `Authorization` header, read from `~/.claude.json` (`projects["<cwd>"].mcpServers.kamosu.headers`) inside the script, never printed. Set a plain `User-Agent` (`curl/8.5`); Python's default draws a 403. The answer's `result.photograph_id` goes in `steps[].photo` or `main_photo`. `upload_photograph` takes base64 through the conversation, about 100 KB of context a photo: keep it for a single picture.
 - **Newlines in a note are real line breaks** in the parameter, never a typed `\n`.
 - **Tags, Readings and Related Recipes are cheap**: `set_recipe_tag`, `set_reading` and `set_related_recipe` touch no content and mint no Version.
 - **A misread ingredient line is fixed with `set_reading`.** An unchanged line keeps its old Reading on every new Version, so a re-save never corrects it (#166). Ranges ("2-3 basil leaves") read as all Food until #167 is fixed.
