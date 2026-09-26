@@ -2,7 +2,7 @@
 name: kamosu
 description: "Work on the household recipe library in Kamosu through its MCP tools: add, fix or rebuild a recipe, retitle, tag, merge Foods, record an Attempt, or file a Kamosu bug found along the way."
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Kamosu: the recipe library
@@ -24,6 +24,7 @@ The running record of cleanup work, decisions and what is still open is the vaul
 - **The source decides every quantity, time, temperature and method.** Where the source is silent, leave the field empty and say so. A gap is honest; a plausible guess in a recipe he cooks from is not.
 - **Deleting a recipe is Aurélien's call**, asked recipe by recipe.
 - **Choices are his.** Bring options with a recommendation, one question at a time, and wait.
+- **Link every recipe you create or edit** in your reply, with the recipe's title as the link text: `[Gochujang chicken orzo](https://recipes.battercloud.cc/recipes/b_c54e61034c7d5ad8)`, never a bare URL. The address is `<public address>/recipes/<branch_id>`. `get_public_address` gives the address (`https://recipes.battercloud.cc`), and the web app's recipe page is `/recipes/[branchId]`. No tool returns this link itself, so build it.
 - **Show a change before making it** whenever it touches more than the one recipe he named: old and new side by side, applied only on his word.
 
 ## Editing mechanics
@@ -68,4 +69,4 @@ File it on `BattermanZ/Kamosu` with `gh issue create --repo BattermanZ/Kamosu` a
 
 ## Finishing
 
-Update the vault note: move finished work into its done record, add what you left and why, name any issue filed. Report per task what changed, what you verified, and what you left.
+Update the vault note: move finished work into its done record, add what you left and why, name any issue filed. Report per task what changed, what you verified, and what you left, with each recipe's link.
