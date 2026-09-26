@@ -3,7 +3,7 @@ name: ask-me
 description: Ask which skill or flow fits your situation. A router over the batterskills catalogue.
 disable-model-invocation: true
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
 ---
 
 # Ask me
@@ -93,7 +93,7 @@ The engineering flows assume the target repo declares its issue tracker and tria
 
 ## Beyond engineering
 
-The catalogue reaches past the main flow into four more trees: buying, the vault, writing, and UI. None of them runs through `/grill-with-docs` or `/implement`. Buying has a flow of its own; the rest are single skills you pick by situation.
+The catalogue reaches past the main flow into five more trees: buying, the vault, the recipe library, writing, and UI. None of them runs through `/grill-with-docs` or `/implement`. Buying has a flow of its own; the rest are single skills you pick by situation.
 
 Most of these are **model-invoked**: the agent reaches for them the moment the request fits, so describing the job is enough. The four marked **user-invoked** below never fire on their own, and you type them.
 
@@ -118,6 +118,10 @@ Every vault skill reads and writes BatterNotes through the Hatchdoor MCP tools, 
 - **`/wayfinder-vault-tracker`**: where a `/wayfinder` effort lives when its subject isn't code (household, hardware, life, fleet decisions). The map, tickets and research notes go under `wayfinder/<effort>/` in the vault; an effort about code keeps its repo tracker. Run these sessions from `~/coding/wayfinding`. It loads itself once `/wayfinder` starts on a non-coding subject.
 
 `effort-store` and `effort-store-vault` are plumbing, not entry points: `/purchase-advisor` loads them to find and save its efforts.
+
+### The recipe library
+
+- **`/kamosu`**: any work on the household recipes in Kamosu: fixing or rebuilding a recipe, retitling, tagging, merging Foods, recording an Attempt. Every write is production, so it reads back each save, works one recipe at a time, and shows you anything broader than the recipe you named before applying it. Broken recipes are rebuilt from their own source (web page, YouTube description or on-screen card), never from memory. Its running record is the vault note "Kamosu - Recipe library cleanup". Run it from `~/coding/wayfinding`, where the Kamosu MCP server is registered.
 
 ### Writing
 
