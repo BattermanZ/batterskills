@@ -2,14 +2,17 @@
 name: kamosu
 description: "Work on the household recipe library in Kamosu through its MCP tools: add, fix, rebuild or translate a recipe, retitle, tag, merge Foods, record an Attempt, or file a Kamosu bug found along the way."
 metadata:
-  version: "1.3.1"
+  version: "1.4.0"
 ---
 
 # Kamosu: the recipe library
 
 Kamosu is Aurélien's self-hosted recipe app, and its one instance is the household's only copy of the library. `get_public_address` gives its address, called `<public address>` below. There is no staging: every write lands in the recipes he cooks from. Treat each save as **production**.
 
-The running record of cleanup work, decisions and what is still open is the vault note **Kamosu - Recipe library cleanup** (`personal/projects/kamosu/`, reached through the `hatchdoor` skill). Read its "Still to do" and its bug list before starting, and update it before finishing.
+Two vault notes in `personal/projects/kamosu/`, reached through the `hatchdoor` skill, hold what this skill does not:
+
+- **Kamosu - Library conventions**: how Aurélien wants the library to look (titles, Source, ingredient lines, photos, French translations, tags and their tests, Food names and the Foods kept apart). Every rule in it is his; this skill is how to carry them out. Read it before the first write.
+- **Kamosu - Recipe library cleanup**: the running record of work done, what is still open, and the bugs filed. Read its "Still to do" and its bug list before starting, and update it before finishing.
 
 ## Before the first write
 
@@ -23,7 +26,7 @@ The running record of cleanup work, decisions and what is still open is the vaul
 - **Read back every save** with `get_recipe`: ingredient count, step count, photos, and the fields you meant to leave alone. Move on only when they match. Also read `cooking.steps[].uses`, Kamosu's own guess at which ingredients each step uses, and report any step it links wrongly.
 - **One recipe at a time**, every write verified before the next.
 - **The source decides every quantity, time, temperature and method.** Where the source is silent, leave the field empty and say so. A gap is honest; a plausible guess in a recipe he cooks from is not. What a video shows is the source as much as what it says.
-- **Build the fullest recipe the source supports.** Missing amounts leave those fields empty and nothing else: the recipe still gets its steps, a photo per step and a main photo wherever the source has them.
+- **Build the fullest recipe the source supports**, in the shape the conventions note sets. Missing amounts leave those fields empty and nothing else: the recipe still gets its steps and photos wherever the source has them.
 - **Search the shelf before adding a recipe**, for its main ingredients and its dish type. Link anything close with `set_related_recipe`, and bring a likely duplicate to Aurélien before writing.
 - **Deleting a recipe is Aurélien's call**, asked recipe by recipe.
 - **Choices are his.** Bring options with a recommendation, one question at a time, and wait.
@@ -43,34 +46,27 @@ Kamosu's server states most of these in its MCP instructions since #168, but Cla
 - **`read_ingredient_lines` runs only on Aurélien's word.** It takes no input and walks the whole library, and until #178 is fixed it mints an orphan Food for every already-read line whose word matches no Food name.
 - **A misread ingredient line is fixed with `set_reading`.** An unchanged line keeps its old Reading on every new Version, so a re-save never corrects it (#166). Ranges ("2-3 basil leaves") read as all Food until #167 is fixed.
 
-## House style
+## Notes and Attempts
 
-Every recipe written or repaired leaves in this shape:
-
-- **Titles in sentence case**: first word and proper nouns only (Korean, Ottolenghi, Shin Ramyun, tarte Tatin). French titles follow French rules ("Curry japonais"). "and", never "&". The dish's name only: no site, no "recipe", no "The Best".
-- **Provenance lives in Source**, as "Creator, Platform" with the link ("Brian Lagerstrom, YouTube"). Before a name leaves the title, the Source carries it.
-- **Ingredients are ingredients**: one Food per line, amounts first, preparation after a comma. A recipe in parts gets section headings ("Filling", "Pastry"). "2 tsp EACH garlic powder, onion powder" becomes one line per spice.
-- **Steps are actions**, one per step, in the source's wording. Where a video shows its method without saying it, the steps describe what the frames show, and the note says they were read from the frames and names anything the frames leave unsure. Filler such as "Enjoy!" is dropped; a step that is really an ingredient moves to the ingredients.
-- **The note holds what is true of the recipe**: tips, FAQs, where a method came from when it is not the cited source. What happened on one cooking is an **Attempt** (`start_attempt`, `finish_attempt`), made on the day it happened, never backdated.
-- **Yield** as the source states it ("4 portions", "6 personnes").
+The note holds what is true of the recipe: tips, FAQs, where a method came from when it is not the cited source. What happened on one cooking is an **Attempt** (`start_attempt`, `finish_attempt`), made on the day it happened, never backdated.
 
 ## French translations
 
-Every recipe of Aurélien's that is not in French has a French Translation, kept current. A recipe you add or rebuild gets its Translation in the same job, verified like any save; an edit to the source brings its Translation up to date in the same job too. English versions of French recipes are not wanted. How the French reads, how its lines land on existing Foods, and how to catch a Translation up: [references/translating.md](references/translating.md). Read it before the first `start_translation`.
+Which recipes get a French Translation, and how the French reads, is in the conventions note. A Translation is verified like any save. How to make one, how its lines land on existing Foods, and how to catch one up: [references/translating.md](references/translating.md). Read it before the first `start_translation`.
 
 ## Tags
 
-The scheme and the reasons behind it live in the vault note's tag section: settled by Aurélien on 2026-09-26. In short, Meat is the parent of Beef and Chicken, Vegan recipes also carry Vegetarian, Colombian recipes also carry South American, and Korean and Japanese are distinct. Every recipe carries at least one tag. A new tag is his decision.
+The tags, which ones imply another, and the test for each are in the conventions note. Tag a new or rebuilt recipe by those tests, and its Translation the same.
 
 Before changing tags across more than one recipe, snapshot every recipe's current tags to a file: tag changes have no undo.
 
 ## Recovering a recipe from its source
 
-A recipe that is an empty bookmark, a caption dumped into one step, or a method filed as ingredients is rebuilt from its own source, never from memory. Web pages, Instagram accents and a caption with no method: [references/recovering-recipes.md](references/recovering-recipes.md). YouTube and Shorts (description, captions, reading the method and the photos off the frames): [references/youtube.md](references/youtube.md).
+A recipe that is an empty bookmark, a caption dumped into one step, or a method filed as ingredients is rebuilt from its own source, never from memory. Web pages, Instagram and a caption with no method: [references/recovering-recipes.md](references/recovering-recipes.md). YouTube and Shorts (description, captions, reading the method and the photos off the frames): [references/youtube.md](references/youtube.md).
 
 ## Foods
 
-Merging Foods is the only thing that shrinks the list, and it cannot be undone. The batch workflow, the keep-apart list and the French-name behaviour are in [references/foods.md](references/foods.md). Read it before the first merge.
+Merging Foods is the only thing that shrinks the list, and it cannot be undone. The batch workflow and how French names behave are in [references/foods.md](references/foods.md); the Foods to keep apart are in the conventions note. Read it before the first merge.
 
 ## A fault in Kamosu itself
 
@@ -78,4 +74,4 @@ File it on `BattermanZ/Kamosu` with `gh issue create --repo BattermanZ/Kamosu` a
 
 ## Finishing
 
-Update the vault note: move finished work into its done record, add what you left and why, name any issue filed. Report per task what changed, what you verified, and what you left, with each recipe's link and every French Food name you set.
+Update the cleanup note: move finished work into its done record, add what you left and why, name any issue filed. Report per task what changed, what you verified, and what you left, with each recipe's link and every French Food name you set. A new rule Aurélien settles along the way goes into the conventions note, not the cleanup note.

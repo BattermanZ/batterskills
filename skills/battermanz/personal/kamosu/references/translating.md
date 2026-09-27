@@ -1,24 +1,22 @@
 # Translating a recipe into French
 
-Settled with Aurélien on 2026-09-27. The recipe keeps its source Language, and the French text is a Kamosu Translation: `start_translation` makes a French Branch of the same Lineage that records which Version of the source it renders. The source stays the recipe of record; the Translation follows it.
+The recipe keeps its source Language, and the French text is a Kamosu Translation: `start_translation` makes a French Branch of the same Lineage that records which Version of the source it renders. The source stays the recipe of record; the Translation follows it.
 
-## What the French text says
+## Making the Translation
 
-- **The source's numbers and units, words translated.** "2 cups flour" becomes "2 tasses de farine", "350°F" stays 350 °F. Reading Measures convert on screen; a converted number in the text is a quantity the source never gave. Check that a °F temperature inside a step converts on screen before relying on it.
-- **Titles in natural French**, sentence case. A dish French already names takes that name ("Coq au vin", "Moules marinières"); a borrowed dish name French keeps stays ("Nouilles dan dan", "Ceviche"); people and brands keep theirs ("Nouilles de Chef Tyler"). Glosses written for English readers go. Show Aurélien the pair when a title is a judgement call.
-- **Steps address the cook as "vous"** ("Saisissez", "Faites revenir"), matching the library's French recipes.
-- **Note and Yield noun translated; Source copied unchanged.**
-- **Photos are copied by hand**: `main_photo` and every `steps[].photo` go into the `start_translation` payload with the same ids. Then copy every tag with `set_recipe_tag` and every related recipe with `set_related_recipe`. Nothing carries them over.
+How the French reads (units, title, "vous", what is translated and what is copied) is in the conventions note. Show Aurélien the pair when a title is a judgement call. Kamosu converts a °F temperature inside a step on screen; check it does before relying on it.
+
+**Photos, tags and related recipes are copied by hand.** `main_photo` and every `steps[].photo` go into the `start_translation` payload with the same ids. Then copy every tag with `set_recipe_tag` and every related recipe with `set_related_recipe`. Nothing carries them over.
 
 ## Every ingredient line lands on an existing Food
 
 The reader finds a Food by its name in the line's Language: exact match, case-folded, accents kept, no plurals, and `'` and `’` are different characters. A line that matches no French name mints a new French-only Food, which splits the shopping list from its English twin.
 
-- **Name the Food first.** Before writing the lines, map each source line to its Food with `shopping_basis` on the source (it names the Food behind every line, read-only). A Food with no French name gets one with `set_food_name` before the translation is saved.
-- **Naming rules**: lowercase, straight apostrophe, singular for what is measured (farine, beurre), plural for what is counted (œufs, carottes). Keep the keep-apart pairs of [foods.md](foods.md) apart in French too.
+- **Name the Food first.** Before writing the lines, map each source line to its Food with `shopping_basis` on the source (it names the Food behind every line, read-only). A Food with no French name gets one with `set_food_names` before the translation is saved. Give a counted Food both numbers, `["œufs", "œuf"]`, so "1 œuf" and "3 œufs" both find it (ADR 0043).
+- **Name it by the conventions note's rules** for French Food names, and keep its keep-apart pairs apart in French too.
 - **A clean French-only Food answering to the same ingredient** ("crème fraîche", "piment doux") is merged into the English Food, on Aurélien's word, instead of giving the English Food a second copy of the name.
 - **Write each line with the Food's French name as its food words**: "2 gousses d'ail", "200 g de farine", "3 œufs".
-- **Read back with `shopping_basis` on the Translation.** Every ingredient line points at the same Food as its source line. Fix a miss ("1 carotte" read as a new Food "carotte") with `set_reading`, target the Food's French name, and delete the stray Food it minted.
+- **Read back with `shopping_basis` on the Translation.** Every ingredient line points at the same Food as its source line. Fix a miss ("1 carotte" read as a new Food "carotte") by merging the stray into the Food: the merge keeps "carotte" as a second French name, so the next "1 carotte" finds it.
 - **Report every French name you set** in the run's summary, so Aurélien can flag one.
 
 ## Keeping a Translation current

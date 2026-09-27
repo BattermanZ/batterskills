@@ -12,7 +12,7 @@ In [youtube.md](youtube.md).
 
 ## Instagram
 
-The Crouton import stripped every non-ASCII character from Instagram captions. The live reel page still has them: re-fetch it rather than retyping accents. To find damaged recipes, search Kamosu for broken word forms (`mlangez`, `prparation`, `ingrdients`), never a stem that matches an intact word, since search folds accents.
+The live reel page carries the caption as posted, accents and all: fetch it rather than retyping from a copy.
 
 ## When the source has no method
 

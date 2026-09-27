@@ -1,6 +1,6 @@
 # Recovering a recipe from YouTube
 
-Work in the session scratchpad. `yt-dlp` is not installed; run it through `uvx`. There is no system ffmpeg; use the one bundled in `imageio-ffmpeg`.
+Work in the session scratchpad.
 
 ## 1. Description and captions
 
