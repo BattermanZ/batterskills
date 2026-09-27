@@ -3,7 +3,7 @@ name: ask-me
 description: Ask which skill or flow fits your situation. A router over the batterskills catalogue.
 disable-model-invocation: true
 metadata:
-  version: "1.4.0"
+  version: "1.4.1"
 ---
 
 # Ask me
@@ -121,7 +121,7 @@ Every vault skill reads and writes BatterNotes through the Hatchdoor MCP tools, 
 
 ### The recipe library
 
-- **`/kamosu`**: any work on the household recipes in Kamosu: fixing or rebuilding a recipe, retitling, tagging, merging Foods, recording an Attempt. Every write is production, so it reads back each save, works one recipe at a time, and shows you anything broader than the recipe you named before applying it. Broken recipes are rebuilt from their own source (web page, YouTube description or on-screen card), never from memory. Its running record is the vault note "Kamosu - Recipe library cleanup". Run it from `~/coding/wayfinding`, where the Kamosu MCP server is registered.
+- **`/kamosu`**: any work on the household recipes in Kamosu: fixing or rebuilding a recipe, retitling, tagging, merging Foods, recording an Attempt. Every write is production, so it reads back each save, works one recipe at a time, and shows you anything broader than the recipe you named before applying it. Broken recipes are rebuilt from their own source (web page, YouTube description or on-screen card), never from memory. What is still open lives in the vault note "Kamosu - Recipe library cleanup". Run it from `~/coding/wayfinding`, where the Kamosu MCP server is registered.
 
 ### Writing
 

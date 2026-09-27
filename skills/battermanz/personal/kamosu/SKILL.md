@@ -2,7 +2,7 @@
 name: kamosu
 description: "Work on the household recipe library in Kamosu through its MCP tools: add, fix, rebuild or translate a recipe, retitle, tag, merge Foods, record an Attempt, or file a Kamosu bug found along the way."
 metadata:
-  version: "1.5.0"
+  version: "1.6.0"
 ---
 
 # Kamosu: the recipe library
@@ -12,13 +12,13 @@ Kamosu is Aurélien's self-hosted recipe app, and its one instance is the househ
 Two vault notes in `personal/projects/kamosu/`, reached through the `hatchdoor` skill, hold what this skill does not:
 
 - **Kamosu - Library conventions**: how Aurélien wants the library to look (titles, Source, ingredient lines, photos, French translations, tags and their tests, Food names and the Foods kept apart). Every rule in it is his; this skill is how to carry them out. Read it before the first write.
-- **Kamosu - Recipe library cleanup**: the running record of work done, what is still open, and the bugs filed. Read its "Still to do" and its bug list before starting, and update it before finishing.
+- **Kamosu - Recipe library cleanup**: what is still open, and nothing else: recipes waiting on Aurélien, fixes an agent can do, the Kamosu bugs being waited on, and the Foods long tail. Read it before starting.
 
 ## Before the first write
 
 - The `kamosu` MCP server is registered per project, in `~/coding/wayfinding`, `~/coding/kamosu` and `~/coding/batterlab`. Anywhere else the tools are absent: say so rather than working around it.
 - `instance_status` answers when the server is reachable.
-- Check the open issues on `BattermanZ/Kamosu` that this skill names (#165, #166, #167). A fixed one retires the workaround written for it.
+- Check the open issues on `BattermanZ/Kamosu` that this skill names (#165, #166, #167). A fix retires the workaround written for it only once it is deployed: a closed issue is not enough, so ask Aurélien before dropping one.
 - Run the translation sweep in [references/translating.md](references/translating.md) and offer what it finds.
 
 ## Hard rules
@@ -73,4 +73,4 @@ File it on `BattermanZ/Kamosu` with `gh issue create --repo BattermanZ/Kamosu` a
 
 ## Finishing
 
-Update the cleanup note: move finished work into its done record, add what you left and why, name any issue filed. Report per task what changed, what you verified, and what you left, with each recipe's link and every French Food name you set. A new rule Aurélien settles along the way goes into the conventions note, not the cleanup note.
+Update the cleanup note: add what you left open and why, and delete each item you closed. Finished work is not logged there; the recipe's own history and the issue tracker hold it. Report per task what changed, what you verified, and what you left, with each recipe's link and every French Food name you set. A new rule Aurélien settles along the way goes into the conventions note, not the cleanup note.
