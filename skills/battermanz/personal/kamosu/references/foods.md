@@ -2,7 +2,7 @@
 
 A Food is the ingredient a Reading points at. The import left many spellings of one ingredient ("garlic cloves", "minced garlic", "Garlic"). Merging joins them: every Reading on the absorbed Food moves to the survivor. There is no un-merge.
 
-Neither deleting a recipe nor repairing an ingredient line shrinks the list: old Versions keep their Readings, so a repair adds a clean Food beside the dirty one. A Food left behind by a deleted recipe cannot be deleted (#162), but it can be merged away.
+Neither deleting a recipe nor repairing an ingredient line shrinks the list: old Versions keep their Readings, so a repair adds a clean Food beside the dirty one. A Food no recipe shows any more can be deleted with `delete_food`, or merged away.
 
 ## The batch
 

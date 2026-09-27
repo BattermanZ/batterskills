@@ -1,8 +1,8 @@
 ---
 name: kamosu
-description: "Work on the household recipe library in Kamosu through its MCP tools: add, fix or rebuild a recipe, retitle, tag, merge Foods, record an Attempt, or file a Kamosu bug found along the way."
+description: "Work on the household recipe library in Kamosu through its MCP tools: add, fix, rebuild or translate a recipe, retitle, tag, merge Foods, record an Attempt, or file a Kamosu bug found along the way."
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Kamosu: the recipe library
@@ -15,7 +15,8 @@ The running record of cleanup work, decisions and what is still open is the vaul
 
 - The `kamosu` MCP server is registered per project, in `~/coding/wayfinding`, `~/coding/kamosu` and `~/coding/batterlab`. Anywhere else the tools are absent: say so rather than working around it.
 - `instance_status` answers when the server is reachable.
-- Check the open issues on `BattermanZ/Kamosu` that this skill names (#161, #162, #165, #166, #167). A fixed one retires the workaround written for it.
+- Check the open issues on `BattermanZ/Kamosu` that this skill names (#161, #165, #166, #167). A fixed one retires the workaround written for it.
+- Run the translation sweep in [references/translating.md](references/translating.md) and offer what it finds.
 
 ## Hard rules
 
@@ -31,7 +32,7 @@ The running record of cleanup work, decisions and what is still open is the vaul
 
 ## Editing mechanics
 
-These belong in Kamosu's own MCP instructions (#168). When the server states them, trust the server and cut them from here.
+Kamosu's server states most of these in its MCP instructions since #168, but Claude Code does not show them to the model (seen 2026-09-27), so they stay here until it does.
 
 - **`edit_recipe` for every change.** It takes only the fields that change. `ingredients` and `steps` are each replaced whole, so changing one line means sending that whole list and leaving the other out. `save_recipe_version` replaces the entire recipe: a field left out is erased.
 - **Every edit carries a `change_note`.** Edits within roughly an hour of the last save on the same recipe collapse into that Version, and a collapsed edit without a note erases the one already there (#165). A note-only edit saves nothing, so a lost note stays lost.
@@ -51,6 +52,10 @@ Every recipe written or repaired leaves in this shape:
 - **Steps are actions**, one per step, in the source's wording. Where a video shows its method without saying it, the steps describe what the frames show, and the note says they were read from the frames and names anything the frames leave unsure. Filler such as "Enjoy!" is dropped; a step that is really an ingredient moves to the ingredients.
 - **The note holds what is true of the recipe**: tips, FAQs, where a method came from when it is not the cited source. What happened on one cooking is an **Attempt** (`start_attempt`, `finish_attempt`), made on the day it happened, never backdated.
 - **Yield** as the source states it ("4 portions", "6 personnes").
+
+## French translations
+
+Every recipe of Aurélien's that is not in French has a French Translation, kept current. A recipe you add or rebuild gets its Translation in the same job, verified like any save; an edit to the source brings its Translation up to date in the same job too. English versions of French recipes are not wanted. How the French reads, how its lines land on existing Foods, and how to catch a Translation up: [references/translating.md](references/translating.md). Read it before the first `start_translation`.
 
 ## Tags
 
@@ -72,4 +77,4 @@ File it on `BattermanZ/Kamosu` with `gh issue create --repo BattermanZ/Kamosu` a
 
 ## Finishing
 
-Update the vault note: move finished work into its done record, add what you left and why, name any issue filed. Report per task what changed, what you verified, and what you left, with each recipe's link.
+Update the vault note: move finished work into its done record, add what you left and why, name any issue filed. Report per task what changed, what you verified, and what you left, with each recipe's link and every French Food name you set.
