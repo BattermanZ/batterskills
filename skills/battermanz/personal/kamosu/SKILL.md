@@ -2,7 +2,7 @@
 name: kamosu
 description: "Work on the household recipe library in Kamosu through its MCP tools: add, fix, rebuild or translate a recipe, retitle, tag, merge Foods, record an Attempt, or file a Kamosu bug found along the way."
 metadata:
-  version: "1.4.0"
+  version: "1.5.0"
 ---
 
 # Kamosu: the recipe library
@@ -18,7 +18,7 @@ Two vault notes in `personal/projects/kamosu/`, reached through the `hatchdoor` 
 
 - The `kamosu` MCP server is registered per project, in `~/coding/wayfinding`, `~/coding/kamosu` and `~/coding/batterlab`. Anywhere else the tools are absent: say so rather than working around it.
 - `instance_status` answers when the server is reachable.
-- Check the open issues on `BattermanZ/Kamosu` that this skill names (#161, #165, #166, #167, #178, #179). A fixed one retires the workaround written for it.
+- Check the open issues on `BattermanZ/Kamosu` that this skill names (#165, #166, #167). A fixed one retires the workaround written for it.
 - Run the translation sweep in [references/translating.md](references/translating.md) and offer what it finds.
 
 ## Hard rules
@@ -43,7 +43,6 @@ Kamosu's server states most of these in its MCP instructions since #168, but Cla
 - **Photos go up out of band.** `POST <public address>/api/photographs` takes the raw image as the body with the kamosu MCP server's own `Authorization` header, read from `~/.claude.json` (`projects["<cwd>"].mcpServers.kamosu.headers`) inside the script, never printed. Set a plain `User-Agent` (`curl/8.5`); Python's default draws a 403. The answer's `result.photograph_id` goes in `steps[].photo` or `main_photo`. `upload_photograph` takes base64 through the conversation, about 100 KB of context a photo: keep it for a single picture.
 - **Newlines in a note are real line breaks** in the parameter, never a typed `\n`.
 - **Tags, Readings and Related Recipes are cheap**: `set_recipe_tag`, `set_reading` and `set_related_recipe` touch no content and mint no Version.
-- **`read_ingredient_lines` runs only on Aurélien's word.** It takes no input and walks the whole library, and until #178 is fixed it mints an orphan Food for every already-read line whose word matches no Food name.
 - **A misread ingredient line is fixed with `set_reading`.** An unchanged line keeps its old Reading on every new Version, so a re-save never corrects it (#166). Ranges ("2-3 basil leaves") read as all Food until #167 is fixed.
 
 ## Notes and Attempts
