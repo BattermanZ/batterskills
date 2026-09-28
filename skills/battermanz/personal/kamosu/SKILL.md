@@ -16,7 +16,7 @@ Two vault notes in `personal/projects/kamosu/`, reached through the `hatchdoor` 
 
 ## Before the first write
 
-- The `kamosu` MCP server is registered per project, in `~/coding/wayfinding`, `~/coding/kamosu` and `~/coding/batterlab`. Anywhere else the tools are absent: say so rather than working around it.
+- If the `kamosu` MCP tools are not available, say so and stop. Do not reach the instance another way (API calls, the web UI, the database).
 - `instance_status` answers when the server is reachable.
 - Check the open issues on `BattermanZ/Kamosu` that this skill names (#165, #166, #167). A fix retires the workaround written for it only once it is deployed: a closed issue is not enough, so ask Aurélien before dropping one.
 - Run the translation sweep in [references/translating.md](references/translating.md) and offer what it finds.
