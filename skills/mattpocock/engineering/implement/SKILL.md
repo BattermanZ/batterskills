@@ -27,13 +27,13 @@ GitHub issue work requires an authenticated `gh` session and an unambiguous GitH
 
 ## 3. Implement and check
 
-Implement the agreed work without reopening its design. Use `/tdd` where possible at pre-agreed seams. Run typechecking and focused tests regularly, then run every repository-required validation and the full test suite.
+Implement the agreed work without reopening its design. Call the Skill tool with "tdd" where possible at pre-agreed seams. Run typechecking and focused tests regularly, then run every repository-required validation and the full test suite.
 
 All automated checks must pass before review.
 
 ## 4. Review and fix
 
-Run `/code-review` against the complete change since the recorded starting `HEAD`, including committed, staged, unstaged, and untracked work. Supply the issue or spec explicitly so the Spec axis does not depend on commit messages.
+Call the Skill tool with "code-review" against the complete change since the recorded starting `HEAD`, including committed, staged, unstaged, and untracked work. Supply the issue or spec explicitly so the Spec axis does not depend on commit messages.
 
 Resolve every actionable finding: fix it or record why it does not apply. Rerun affected focused checks and every repository-required validation. No hard Standards finding or Spec finding may remain unresolved.
 

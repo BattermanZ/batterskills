@@ -75,7 +75,7 @@ Show counts and a one-line summary per item. Let the maintainer pick.
 
    **Name the cause.** A bug brief names the cause, so a reproduction that leaves it opaque is half a verification: run the `/diagnosing-bugs` skill and carry its root cause into the brief. When the reporter supplied a cause, verify theirs rather than deriving your own, and report whether it held up.
 
-4. **Grill (if needed).** If the request needs fleshing out, call the Skill tool twice, for "grilling" and "domain-modeling", and grill it into shape a round of questions at a time, sharpening domain terms and updating `CONTEXT.md`/ADRs inline as decisions land.
+4. **Grill (if needed).** If the request needs fleshing out, call the Skill tool twice, for "grilling" and "domain-modeling", and grill it into shape a round of questions at a time, sharpening domain terms and updating `GLOSSARY.md`/ADRs inline as decisions land.
 
 5. **Apply the outcome:**
    - `ready-for-agent`: post an agent brief comment ([AGENT-BRIEF.md](AGENT-BRIEF.md)).
