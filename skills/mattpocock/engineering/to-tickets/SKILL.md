@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Break a plan, spec, or conversation into a set of **tickets**: tracer-bullet vertical slices, each declaring the tickets that **block** it.
 
-The issue tracker and triage label vocabulary should have been provided to you. If not, look for `docs/agents/issue-tracker.md` in the target repo; when there is none, ask the user which tracker to use.
+The issue tracker and triage label vocabulary should have been provided to you. If not, read the target repo's instructions (`AGENTS.md`, `AGENTS.local.md`, `docs/agents/issue-tracker.md`); when none names a tracker, ask the user which to use.
 
 ## Process
 

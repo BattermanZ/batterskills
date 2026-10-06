@@ -1,5 +1,5 @@
 interface:
   display_name: "Implement"
-  short_description: "Claim, validate, and ship one GitHub issue"
+  short_description: "Claim, validate, and ship one issue"
 policy:
   allow_implicit_invocation: false

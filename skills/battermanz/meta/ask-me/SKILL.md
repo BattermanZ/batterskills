@@ -3,7 +3,7 @@ name: ask-me
 description: Ask which skill or flow fits your situation. A router over the batterskills catalogue.
 disable-model-invocation: true
 metadata:
-  version: "1.5.0"
+  version: "1.5.1"
 ---
 
 # Ask me
@@ -25,7 +25,7 @@ The route most work travels. You have an idea and want it built.
    - **Yes** → **`/to-spec`** (turn the thread into a spec), then **`/to-tickets`** to split it into tracer-bullet tickets, each declaring its **blocking edges**. On a local tracker that's one file per ticket under `.scratch/<feature>/issues/`, worked blockers-first by hand; on a real tracker the edges become native blocking links, so any ticket whose blockers are done can be grabbed. Kick off **`/implement`** per ticket, **`/clear`ing context between each one**. Each ticket is self-contained, so the last one's context is disposable. Or run **`/implement-spec`** for the whole spec in one go: it reads the tickets as a **task graph**, runs implementer subagents across the ready **frontier** in parallel, each in its own worktree, and lands everything on one **integration branch**. Reach for it when you'd rather orchestrate the build than drive each ticket yourself. It holds the same gates as `/implement` (claim, review, live acceptance, checklist), once for the whole spec.
    - **No** → **`/implement`** right here, in the same context window.
 
-   Either way, **`/implement`** claims one GitHub issue through `gh`, drives **`/tdd`** internally (one red-green slice at a time), runs **`/code-review`** over the complete change, and fixes the findings. It then proves the reviewed code against the live test environment documented in `AGENTS.md`, completes the GitHub issue checklist, commits, pushes, and closes the issue. With no argument it takes the oldest unassigned, unblocked `ready-for-agent` GitHub issue. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, and **`/code-review`** on its own whenever you want to review a branch, PR, or working tree against a fixed point.
+   Either way, **`/implement`** claims one issue on the repo's tracker, drives **`/tdd`** internally (one red-green slice at a time), runs **`/code-review`** over the complete change, and fixes the findings. It then proves the reviewed code against the live test environment documented in `AGENTS.md`, completes the issue checklist, commits, pushes, and closes the issue. With no argument it takes the oldest unassigned, unblocked `ready-for-agent` issue. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, and **`/code-review`** on its own whenever you want to review a branch, PR, or working tree against a fixed point.
 
    When the work goes up as a pull request, **`/pr`** shapes the body: the smallest visual that shows the change, before/after evidence that it works, and a one-way or two-way door call with its blast radius. It's model-invoked, so the agent reaches for it whenever it writes a PR.
 
@@ -92,7 +92,7 @@ Off the main flow entirely.
 
 ## Precondition
 
-The engineering flows assume the target repo declares its issue tracker and triage labels in `docs/agents/issue-tracker.md`. When that file is missing, ask which tracker to use before publishing tickets. The personalized `/implement` workflow uses GitHub through `gh`.
+The engineering flows assume the target repo's instructions name its issue tracker and triage labels: `AGENTS.md`, the machine-local `AGENTS.local.md`, or `docs/agents/issue-tracker.md`. When none of them does, ask which tracker to use before publishing tickets or claiming an issue. No skill here is tied to one tracker.
 
 ## Beyond engineering
 

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 You have been provided a spec. This spec should have tickets associated with it, describing how to implement the spec.
 
-The issue tracker should have been provided to you. If not, look for `docs/agents/issue-tracker.md` in the target repo; when there is none, ask the user which tracker to use.
+The issue tracker should have been provided to you. If not, read the target repo's instructions (`AGENTS.md`, `AGENTS.local.md`, `docs/agents/issue-tracker.md`); when none names a tracker, ask the user which to use.
 
 The goal is the entire spec implemented on a single **integration branch**, with every ticket resolved the way the issue tracker closes work.
 
