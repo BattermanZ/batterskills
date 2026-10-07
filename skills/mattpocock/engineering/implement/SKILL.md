@@ -14,7 +14,17 @@ Before changing code, identify from those instructions how to start or reach the
 
 Find which issue tracker the repo uses and how to operate it. The repo's instructions say: `AGENTS.md`, the machine-local `AGENTS.local.md`, or `docs/agents/issue-tracker.md`. This skill names no tracker of its own.
 
-Inspect the worktree and branch before claiming the work. Require a clean worktree, record the starting `HEAD` as the review fixed point, and confirm pushing this branch will not include unrelated unpushed commits. Stop and ask the user to resolve or explicitly include any pre-existing work.
+Inspect the worktree and branch before claiming the work. On a clean worktree, record the starting `HEAD` as the review fixed point and confirm pushing this branch will not include unrelated unpushed commits.
+
+A dirty worktree is a **handover** or a stop. It is a handover when all three hold:
+
+- every uncommitted file belongs to one issue, and that issue is assigned to you;
+- that issue's ledger records the automated checks, the review and the live pass as done;
+- no uncommitted file was modified after that record was written.
+
+On a handover, resume that issue at step 6. Its ledger is the evidence: the checks, the review and the live pass stand as recorded. Ask the user only for what the ledger still shows outstanding, such as a check on their own device. Once it has shipped, start any further work from step 1 on the clean worktree.
+
+Anything else is a stop: ask the user to resolve or explicitly include the pre-existing work.
 
 ## 2. Resolve and claim the work
 
