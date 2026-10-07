@@ -3,12 +3,12 @@ name: hatchdoor
 description: "Manage the user's vault through the Hatchdoor MCP tools: discover Vaults, search, read, create, edit, organise, sync and manage attachments. Use for ANY vault/notes request."
 platforms: [linux, macos, windows]
 metadata:
-  version: "1.7.1"
+  version: "1.7.2"
 ---
 
 # Hatchdoor: the vault via MCP
 
-On this host the vault is **remote** and reached **only** through the Hatchdoor MCP tools. There is **no local vault on disk**, so never use file tools, shell, or filesystem paths for vault content. Always use the Hatchdoor MCP tools.
+On this host the vault is **remote** and reached **only** through the Hatchdoor MCP tools. There is **no local vault on disk**, so read and change vault content through the Hatchdoor MCP tools, never through file tools, shell, or filesystem paths. The one exception is the read-only exact-string check under Tool map.
 
 ## Start with Vault discovery
 
@@ -19,10 +19,10 @@ On this host the vault is **remote** and reached **only** through the Hatchdoor 
 
 ## Before any note change
 
-1. Read the note **"Vault - Operating Rules"** (`resolve_wikilink`/`search_notes`, then `get_note`) and follow it: it is the source of truth for filing, tags, links, and change reports.
+1. Read the note **"Vault - Operating Rules"** (`resolve_wikilink`, then `get_note`) and follow it: it is the source of truth for filing, tags, links, and change reports.
 2. If tags may be added or changed, read **"Tags Reference"** first.
 3. Decide the note's **shape** before writing a word of it. Read **"Hatchdoor - Markdown Feature Showcase"** and pick the components that carry what the note has to say: a callout for a verdict or a caveat, a two-column table for repeated labelled facts, a task list for open items, dated sub-headings for anything that accumulates over time, a Mermaid diagram for a flow, a fenced block with its language for anything to be copied and run. Its **Choosing a shape** section maps the common cases. This applies to every note, not only ones you have already decided are rich: bullets top to bottom is a choice too, and usually the wrong one. Layout only: it never licenses adding content the user did not give (see **Minimal capture**).
-4. Search before creating: `search_notes` (semantic by default; keyword mode for exact names/tags/paths). Prefer linking to or updating an existing note over creating a duplicate.
+4. Search before creating: `search_notes` with `limit: 5, per_note_cap: 1`. Prefer linking to or updating an existing note over creating a duplicate.
 5. Before a hash-protected mutation, call `get_note` to obtain its fresh `expected_content_hash`. This applies to `edit_note`, `replace_section`, `update_note`, `append_to_note`, move/rename/archive/delete operations. If the hash is rejected, reread before attempting another edit.
 
 ## Tool map
@@ -30,6 +30,10 @@ On this host the vault is **remote** and reached **only** through the Hatchdoor 
 ### Discover and read
 - Collection/Vault status: `list_vaults`.
 - Search and navigation: `search_notes`, `resolve_wikilink`, `get_note`, `get_note_links`, `get_tree`, `recently_modified`, `get_stats`, `get_graph`.
+- **Known title, no search:** `resolve_wikilink` turns a title into a slug in one small call. A keyword search for the exact title "Vault - Operating Rules" ranks the README above the note itself.
+- **Known folder, no search:** a template or any note whose folder you know comes from `get_tree` on that folder (`_system/templates`).
+- **Search is ranked and heavy:** both modes rank. Keyword mode matches words, so a hit count is never a count of occurrences. Each hit carries its whole chunk and link list, about 2.5 to 4.5 KB, so the defaults (`limit: 10`, `per_note_cap: 2`) return 20 to 50 KB and `limit: 50` overflows the result cap. Start at `limit: 5, per_note_cap: 1` and raise it only when the note you want is missing.
+- **Exact string across the vault** ("which notes still say `CONTEXT.md`", "how many places name X"): Hatchdoor has no exact search. From BatterCode, a read-only grep on the vault's host answers it: `ssh battercitadel "sudo grep -rIl -F '<string>' /home/battermanz/notes --include='*.md'"`. Use it to count and locate only, then read and edit through MCP. On a host without that access, give the search-based answer and say it is approximate.
 - **Shape before contents:** `get_tree` with `include_notes: false` returns every folder and its `note_count` with no notes, an order of magnitude smaller than the bare call. Narrow further with `folder` (matched case-insensitively; a folder that does not exist is an error, not an empty tree) and `max_depth`. The bare call returns the whole Vault and is the expensive one.
 - `scope: "all"` is valid only for read-only collection tools that explicitly support it. Search hits are Vault-qualified; use the returned Vault ID and slug for follow-up reads.
 
