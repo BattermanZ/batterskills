@@ -23,7 +23,7 @@ The reader finds a Food by its name in the line's Language: exact match, case-fo
 
 `get_thread` on any Branch lists its Lineage's Branches, each with its `language` and, for a Translation, `translation.versions_behind`. Above 0, the source has moved on since the Translation was made.
 
-Bring it up to date with `save_recipe_version` on the French Branch: the whole French recipe, with `translates_version_id` set to the source's head Version. `edit_recipe` cannot move `translates_version_id`, so an edit alone leaves the Translation claiming the old Version.
+Bring it up to date with `edit_recipe` on the French Branch: the fields that changed, a `change_note`, and `translates_version_id` set to the source's head Version. Left out, the pointer stays where it was, so an edit alone leaves the Translation claiming the old Version. When the French text needs no change, the tool's description says an edit naming only the new `translates_version_id` moves the pointer and writes no Version (the #183 fix; not yet tried from this skill, so read `versions_behind` back).
 
 ## The sweep
 
