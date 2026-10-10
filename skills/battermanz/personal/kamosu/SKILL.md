@@ -1,15 +1,15 @@
 ---
 name: kamosu
-description: "Work on the household recipe library in Kamosu through its MCP tools: add, fix, rebuild or translate a recipe, retitle, tag, merge Foods, record an Attempt, or file a Kamosu bug found along the way."
+description: "Work on the household recipe library in Kamosu through its MCP tools. Use for any recipe to save or add (a link, a video, a photo, pasted text), and to fix, rebuild, translate, retitle or tag a recipe, merge Foods, record an Attempt, or file a Kamosu bug found along the way."
 metadata:
-  version: "1.6.1"
+  version: "1.7.0"
 ---
 
 # Kamosu: the recipe library
 
 Kamosu is Aurélien's self-hosted recipe app, and its one instance is the household's only copy of the library. `get_public_address` gives its address, called `<public address>` below. There is no staging: every write lands in the recipes he cooks from. Treat each save as **production**.
 
-Two vault notes in `personal/projects/kamosu/`, reached through the `hatchdoor` skill, hold what this skill does not:
+Two vault notes in `personal/projects/kamosu/` hold what this skill does not. Read them with the Hatchdoor tools directly: `list_vaults` for the Vault id, then `resolve_wikilink` on the title and `get_note`. Reading needs nothing more; load the `hatchdoor` skill only to write to the vault.
 
 - **Kamosu - Library conventions**: how Aurélien wants the library to look (titles, Source, ingredient lines, photos, French translations, tags and their tests, Food names and the Foods kept apart). Every rule in it is his; this skill is how to carry them out. Read it before the first write.
 - **Kamosu - Recipe library cleanup**: what is still open, and nothing else: recipes waiting on Aurélien, fixes an agent can do, the Kamosu bugs being waited on, and the Foods long tail. Read it before starting.
@@ -23,9 +23,9 @@ Two vault notes in `personal/projects/kamosu/`, reached through the `hatchdoor` 
 
 ## Hard rules
 
-- **Read back every save** with `get_recipe`: ingredient count, step count, photos, and the fields you meant to leave alone. Move on only when they match. Also read `cooking.steps[].uses`, Kamosu's own guess at which ingredients each step uses, and report any step it links wrongly.
+- **Read back every save** with `get_recipe`: ingredient count, step count, photos, and the fields you meant to leave alone. Then hold each ingredient line beside the source's own line and compare the number and the unit (tsp against tbsp, 15 against 50). Move on only when they match. Also read `cooking.steps[].uses`, Kamosu's own guess at which ingredients each step uses, and report any step it links wrongly.
 - **One recipe at a time**, every write verified before the next.
-- **The source decides every quantity, time, temperature and method.** Where the source is silent, leave the field empty and say so. A gap is honest; a plausible guess in a recipe he cooks from is not. What a video shows is the source as much as what it says.
+- **The source decides every quantity, time, temperature and method.** Where the source is silent, leave the field empty and say so. A gap is honest; a plausible guess in a recipe he cooks from is not. What a video shows is the source as much as what it says. Its numbers and units are copied as written, both of them where it gives two ("½ cup (100 g)"), and a choice it writes inside the ingredient line ("skyr or Greek yogurt") stays in the line. A substitution it gives elsewhere goes in the note.
 - **Build the fullest recipe the source supports**, in the shape the conventions note sets. Missing amounts leave those fields empty and nothing else: the recipe still gets its steps and photos wherever the source has them.
 - **Search the shelf before adding a recipe**, for its main ingredients and its dish type. Link anything close with `set_related_recipe`, and bring a likely duplicate to Aurélien before writing.
 - **Deleting a recipe is Aurélien's call**, asked recipe by recipe.
@@ -43,6 +43,7 @@ Kamosu's server states most of these in its MCP instructions since #168, but Cla
 - **Photos go up out of band.** `POST <public address>/api/photographs` takes the raw image as the body with the kamosu MCP server's own `Authorization` header, read from `~/.claude.json` (`projects["<cwd>"].mcpServers.kamosu.headers`) inside the script, never printed. Set a plain `User-Agent` (`curl/8.5`); Python's default draws a 403. The answer's `result.photograph_id` goes in `steps[].photo` or `main_photo`. `upload_photograph` takes base64 through the conversation, about 100 KB of context a photo: keep it for a single picture.
 - **Newlines in a note are real line breaks** in the parameter, never a typed `\n`.
 - **Tags, Readings and Related Recipes are cheap**: `set_recipe_tag`, `set_reading` and `set_related_recipe` touch no content and mint no Version.
+- **Check the Foods after every save.** `shopping_basis` names the Food behind each ingredient line. Each one is the bare ingredient ("cilantro", "pickles", "rice paper"), with no amount, preparation or packaging in its name, and is the Food the library already holds wherever it holds one. Point a line that landed elsewhere at the right Food with `set_reading`, then `delete_food` every Food this run minted that no line uses any more. A Food that was in the library before the run stays as it is: merging or deleting one is Aurélien's call. The save is finished when every line passes and no stray is left.
 - **A misread ingredient line is fixed with `set_reading`.** An unchanged line keeps its old Reading on every new Version, so a re-save never corrects it (#166). Ranges ("2-3 basil leaves") read as all Food until #167 is fixed.
 
 ## Notes and Attempts
