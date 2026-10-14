@@ -1,14 +1,15 @@
 ---
 name: code-review
-description: 'Review committed and work-in-progress changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo''s documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".'
+description: 'Review committed and work-in-progress changes since a fixed point (commit, branch, tag, or merge-base) along three axes: Standards (does the code follow this repo''s documented coding standards?), Spec (does the code match what the originating issue/spec asked for?) and Defects (does the code give a wrong result on a path that can be reached?). Runs the reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".'
 ---
 
-Two-axis review of the complete change since a fixed point, including committed, staged, unstaged, and untracked work:
+Three-axis review of the complete change since a fixed point, including committed, staged, unstaged, and untracked work:
 
 - **Standards**: does the code conform to this repo's documented coding standards?
 - **Spec**: does the code faithfully implement the originating issue / spec?
+- **Defects**: does the code give a wrong result on a path that can be reached?
 
-Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
+The axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
 The issue tracker should have been provided to you via `docs/agents/issue-tracker.md`; if it is missing, ask the user which tracker to use.
 
@@ -27,7 +28,7 @@ Capture the review surface once:
 
 Also note the commit list via `git log <fixed-point>..HEAD --oneline`.
 
-Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and at least one part of the review surface is non-empty. A bad ref or wholly empty change should fail here, not inside two parallel sub-agents.
+Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and at least one part of the review surface is non-empty. A bad ref or wholly empty change should fail here, not inside the parallel sub-agents.
 
 ### 2. Identify the spec source
 
@@ -62,7 +63,7 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 - **Middle Man**: a class or function that mostly just delegates onward. → cut it, call the real target direct.
 - **Refused Bequest**: a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
 
-### 4. Spawn both sub-agents in parallel
+### 4. Spawn the sub-agents in parallel
 
 **Standards sub-agent prompt** includes:
 
@@ -78,17 +79,24 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 
 If the spec is missing, skip the Spec sub-agent and note this in the final report.
 
+**Defects sub-agent prompt** includes:
+
+- The complete review surface and commit list.
+- The spec when there is one, as the statement of what the change is meant to do. This axis runs with or without it.
+- The brief: "You did not write this change. Hunt for defects in it, and read the whole diff before you run anything. Report every place the code gives a wrong result, loses or corrupts data, leaks a secret, or breaks on an input or state a real caller can reach, and every test or guard in the diff that does not check what it claims to. **Prove** each finding: a command with its output, a failing test, or the file and line read against the concrete case that breaks it. A finding you cannot prove is reported as a question. Grade each one: blocker (harms users or their data, leaks a secret, breaks production or CI), major (a wrong result on a reachable path, or a test or guard that does not do what it claims), minor (any other real defect). Style, naming and structure belong to the Standards axis. Work read-only: the working tree stays as you found it, and throwaway scripts and tests live in a scratch directory outside it. End with what you checked and found sound, then what you did not check. Under 400 words."
+
 ### 5. Aggregate
 
-Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings: the two axes are deliberately separate (see _Why two axes_).
+Present the reports under `## Standards`, `## Spec` and `## Defects` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings: the axes are deliberately separate (see _Why three axes_).
 
 End with a one-line summary: total findings per axis, and the worst issue _within each axis_ (if any). Don't pick a single winner across axes; that's the reranking the separation exists to prevent.
 
-## Why two axes
+## Why three axes
 
-A change can pass one axis and fail the other:
+A change can pass on some axes and fail on another:
 
 - Code that follows every standard but implements the wrong thing → **Standards pass, Spec fail.**
 - Code that does exactly what the issue asked but breaks the project's conventions → **Spec pass, Standards fail.**
+- Code that follows every standard and does what the issue asked, but gives a wrong result on a case the issue never spelled out → **Standards pass, Spec pass, Defects fail.**
 
-Reporting them separately stops one axis from masking the other.
+Reporting them separately stops one axis from masking another.

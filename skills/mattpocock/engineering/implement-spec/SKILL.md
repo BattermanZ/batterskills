@@ -43,7 +43,7 @@ These are the same gates `/implement` holds for one ticket, held here for the wh
 
 6. If this changes the **frontier** of available tickets, kick off more **implementer subagents** to work on the new tickets. This allows for maximum concurrency.
 
-7. Once all tickets are complete, run the full test suite and every repository-required validation on the integration branch. Then call the Skill tool with `code-review` on the integration branch, against the recorded starting `HEAD`, supplying the spec and tickets explicitly. Resolve every actionable finding in a single **implementer subagent**: fix it or record why it does not apply. No hard Standards finding or Spec finding may remain unresolved.
+7. Once all tickets are complete, run the full test suite and every repository-required validation on the integration branch. Then call the Skill tool with `code-review` on the integration branch, against the recorded starting `HEAD`, supplying the spec and tickets explicitly. Resolve every actionable finding in a single **implementer subagent**: fix it or record why it does not apply. No hard Standards finding, Spec finding, or blocker or major Defects finding may remain unresolved.
 
 8. Run final live acceptance yourself, not through a subagent. Start or reach the documented live test environment on the integration branch, exercise the changed behaviour through the app's real public interface, and verify every acceptance criterion of every ticket. Record the commands, paths, URLs, or other evidence used. If the live pass exposes a defect, fix it through an implementer subagent and return to step 7 before repeating it: the final live pass must exercise the reviewed code.
 

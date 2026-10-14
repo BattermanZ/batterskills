@@ -47,7 +47,7 @@ All automated checks must pass before review.
 
 Call the Skill tool with "code-review" against the complete change since the recorded starting `HEAD`, including committed, staged, unstaged, and untracked work. Supply the issue or spec explicitly so the Spec axis does not depend on commit messages.
 
-Resolve every actionable finding: fix it or record why it does not apply. Rerun affected focused checks and every repository-required validation. No hard Standards finding or Spec finding may remain unresolved.
+Resolve every actionable finding: fix it or record why it does not apply. Rerun affected focused checks and every repository-required validation. No hard Standards finding, Spec finding, or blocker or major Defects finding may remain unresolved.
 
 ## 5. Run final live acceptance
 
