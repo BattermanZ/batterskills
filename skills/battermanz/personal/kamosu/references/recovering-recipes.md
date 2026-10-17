@@ -6,6 +6,8 @@ The recipe's Source link is the first place to look, and usually the last. Check
 
 `donsetch fetch '<url>'` returns the page as markdown. Recipe cards keep their ingredient groups ("#### To serve:"), which become section headings. A page's FAQ or tips go in the note.
 
+A page that refuses you can often be read from the Wayback Machine's latest copy of the same address, `https://web.archive.org/web/<url>`; the note says so, and the Source stays the original link. Another site's recipe for the same dish, even one on the same company's other site, is another cook's recipe with its own amounts: never read it in the page's place. With no copy of the page itself, tell Aurélien and leave the recipe as it is.
+
 ## YouTube and YouTube Shorts
 
 In [youtube.md](youtube.md).

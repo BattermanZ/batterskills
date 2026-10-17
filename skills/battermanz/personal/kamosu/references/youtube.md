@@ -53,11 +53,19 @@ When the words and the written recipe give no method or no amounts, the frames a
 - **A full-size frame of everything that carries a fact.** A 240-pixel tile shows an action and hides print. Pull the frame (the command in section 4) for each label, jar and package (its name and its weight), the oven or air fryer display, on-screen text, and the tray or plate that shows how many the recipe makes.
 - **Count what can be counted**: thighs, cloves, tortillas, boxes on the tray.
 
+**Read the text laid over the video, at any depth.** Many videos name each ingredient on screen as it goes in ("flour", "sea salt") and say it nowhere else, and a 240-pixel tile shrinks that text past reading. Cut the strip it sits in, the middle of the bottom fifth unless you saw it elsewhere, from a frame every second:
+
+```bash
+<ffmpeg> -loglevel error -i v.mp4 -vf 'fps=1,crop=iw/2:ih/5:iw/4:ih*4/5,scale=480:-1,tile=4x12' cap%d.jpg
+```
+
+Strip *n* (from 0) of `cap` *k* (from 1) is second `48 × (k − 1) + n`. Every ingredient a caption names is a line of the recipe, with or without an amount, and the moment it appears says which step it goes in. It is the dearest part of a video (it tripled the cost of the run that showed it), so skip it only when the description or a written recipe already lists every ingredient.
+
 The map is done when everything that goes into the pan has an ingredient line, and every cover, lid, foil, oven and grill has a step. An ingredient the frames show without naming it still gets its line, under the plainest name that fits what is seen ("stock", "soft white cheese", "tomato paste" for a red paste from a tube), and the note says it is a reading of the frames and what else it could be. Only what cannot be named at all ("a pale liquid from a small bottle") stays out of the ingredients, described in its step and in the note.
 
 ## 4. Photos
 
-Pick one full-size frame per step and one of the finished dish for the main photo:
+A video is its own picture of the dish, so its recipe takes photos from it even when the description held the whole recipe: download it as in section 3 if you have not. Pick one full-size frame per step and one of the finished dish for the main photo:
 
 ```bash
 <ffmpeg> -loglevel error -y -ss <seconds> -i v.mp4 -frames:v 1 -q:v 3 s01.jpg
