@@ -14,7 +14,7 @@ Before changing code, identify from those instructions how to start or reach the
 
 Find which issue tracker the repo uses and how to operate it. The repo's instructions say: `AGENTS.md`, the machine-local `AGENTS.local.md`, or `docs/agents/issue-tracker.md`. This skill names no tracker of its own.
 
-Inspect the worktree and branch before claiming the work. On a clean worktree, record the starting `HEAD` as the review fixed point and confirm pushing this branch will not include unrelated unpushed commits.
+Inspect the worktree and branch before claiming the work. On a clean worktree, record the starting `HEAD` as the review fixed point and confirm pushing this branch will not include unrelated unpushed commits. If the current branch is not the repo's default branch, record the default branch too: step 6 merges the work into it, so the branch must carry nothing but this work on top of the default branch.
 
 A dirty worktree is a **handover** or a stop. It is a handover when all three hold:
 
@@ -64,4 +64,13 @@ For issue work:
 
 Then inspect the final diff, commit only the intended work to the current branch, push that branch, and verify the remote contains the commit. Follow all repository-specific commit, push, deployment, and post-push validation gates in `AGENTS.md`.
 
-Close the issue, the way the tracker closes work, only after validation, checkbox completion, commit, push, and any required post-push checks have all succeeded. Fetch it once more and verify it is closed. On any failure, leave the issue open and report the exact blocking gate.
+If the work sits on a branch other than the default branch, merge it in and delete it:
+
+1. Fetch the remote. Merge the work branch into the default branch, fast-forward when the default branch has not moved, a merge commit when it has. A conflict is a stop: abort the merge, leave both branches as they are, and report it.
+2. When the merge was not a fast-forward, rerun every repository-required validation on the merged result before pushing it.
+3. Push the default branch and verify the remote contains the merge.
+4. Delete the work branch on the remote and locally. If it is checked out in a worktree you created for this work, remove that worktree first. A branch with an open pull request gets that pull request closed as merged by the tracker, or closed by you with a comment pointing at the merge commit.
+
+Where the repo's instructions require a different landing path, such as merging only through a reviewed pull request, follow them instead and report what is left for a human.
+
+Close the issue, the way the tracker closes work, only after validation, checkbox completion, commit, push, the merge and branch deletion, and any required post-push checks have all succeeded. Fetch it once more and verify it is closed. On any failure, leave the issue open and report the exact blocking gate.
