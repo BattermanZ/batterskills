@@ -3,7 +3,7 @@ name: hatchdoor
 description: "Manage the user's vault through the Hatchdoor MCP tools: discover Vaults, search, read, create, edit, organise, sync and manage attachments. Use for ANY vault/notes request."
 platforms: [linux, macos, windows]
 metadata:
-  version: "1.8.0"
+  version: "1.9.0"
 ---
 
 # Hatchdoor: the vault via MCP
@@ -92,4 +92,4 @@ Build each link from the MCP-returned Vault ID and slug: `https://hatchdoor.batt
 ## External article capture
 
 - If the user asks to capture/transcribe an article via a named extractor (especially Tavily), use that extractor first. Do not silently substitute generic `web_extract`/`web_search`; if the named tool is unavailable, verify whether it can be invoked through MCP/CLI before falling back.
-- Tavily MCP can be run over stdio with `npx -y tavily-mcp@latest` when `TAVILY_API_KEY` is present. Useful tools: `tavily_extract` for a specific URL (`extract_depth: advanced`, `include_images: true`, `format: markdown`) and `tavily_search` for corroborating metadata/snippets.
+- Tavily MCP is the hosted server at `https://mcp.tavily.com/mcp/`, with `TAVILY_API_KEY` sent as `Authorization: Bearer`; on BatterCode it is already configured as the `tavily` server. Do not start `tavily-mcp` through `npx`, which runs whatever npm version is newest (vault ADR 0037). Useful tools: `tavily_extract` for a specific URL (`extract_depth: advanced`, `include_images: true`, `format: markdown`) and `tavily_search` for corroborating metadata/snippets.
