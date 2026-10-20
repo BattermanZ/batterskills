@@ -2,17 +2,14 @@
 name: kamosu
 description: "Work on the household recipe library in Kamosu through its MCP tools. Use for any recipe to save or add (a link, a video, a photo, pasted text), and to fix, rebuild, translate, retitle or tag a recipe, merge Foods, record an Attempt, or file a Kamosu bug found along the way."
 metadata:
-  version: "1.8.0"
+  version: "1.10.0"
 ---
 
 # Kamosu: the recipe library
 
 Kamosu is Aurélien's self-hosted recipe app, and its one instance is the household's only copy of the library. `get_public_address` gives its address, called `<public address>` below. There is no staging: every write lands in the recipes he cooks from. Treat each save as **production**.
 
-Two vault notes in `personal/projects/kamosu/` hold what this skill does not. Read them with the Hatchdoor tools directly: `list_vaults` for the Vault id, then `resolve_wikilink` on the title and `get_note`. Reading needs nothing more; load the `hatchdoor` skill only to write to the vault.
-
-- **Kamosu - Library conventions**: how Aurélien wants the library to look (titles, Source, ingredient lines, photos, French translations, tags and their tests, Food names and the Foods kept apart). Every rule in it is his; this skill is how to carry them out. Read it before the first write.
-- **Kamosu - Recipe library cleanup**: what is still open, and nothing else: recipes waiting on Aurélien, fixes an agent can do, the Kamosu bugs being waited on, and the Foods long tail. Read it before starting.
+The vault note **Kamosu - Library conventions** in `personal/projects/kamosu/` holds what this skill does not: how Aurélien wants the library to look (titles, Source, ingredient lines, photos, French translations, tags and their tests, Food names and the Foods kept apart). Every rule in it is his; this skill is how to carry them out. Read it before the first write, with the Hatchdoor tools directly: `list_vaults` for the Vault id, then `resolve_wikilink` on the title and `get_note`. Reading needs nothing more; load the `hatchdoor` skill only to write to the vault.
 
 ## Before the first write
 
@@ -42,6 +39,7 @@ Kamosu's server states some of these in its MCP instructions (#168). Not every h
 - **`edit_recipe` for every change.** It takes only the fields that change. `ingredients` and `steps` are each replaced whole, so changing one line means sending that whole list and leaving the other out. `save_recipe_version` replaces the entire recipe: a field left out is erased.
 - **Every edit carries a `change_note`.** Edits within an hour of your last save on the same recipe collapse into that Version. A collapsed edit keeps the note already there unless it sends a new one, and a note-only edit inside the hour sets the note.
 - **One recipe, one edit.** Gather everything a recipe needs, then send it once. A second pass inside the hour folds into the first Version, so its `change_note`, if it sends one, replaces the first one's and has to describe both.
+- **Your own corrections make no Version.** Fixing a mistake you made in a recipe lands in the Version you wrote; a new Version is a change in how the dish is cooked. A Translation holding a Version stops later edits collapsing into it, so finish the source recipe before `start_translation`. Kamosu cannot delete a Version: a correction that already made one is undone by deleting and recreating the recipe, its Translation and its Attempts, on Aurélien's word. Deleting a recipe leaves its Attempts behind in the cooking diary, so `delete_attempt` each one and record it again on the new recipe with the same rating and note.
 - **Photos go up out of band.** `POST <public address>/api/photographs` takes the raw image as the body with the kamosu MCP server's own `Authorization` header, read from `~/.claude.json` (`projects["<cwd>"].mcpServers.kamosu.headers`) inside the script, never printed. Set a plain `User-Agent` (`curl/8.5`); Python's default draws a 403. The answer's `result.photograph_id` goes in `steps[].photo` or `main_photo`. `upload_photograph` takes base64 through the conversation, about 100 KB of context a photo: keep it for a single picture.
 - **Newlines in a note are real line breaks** in the parameter, never a typed `\n`.
 - **Tags, Readings and Related Recipes are cheap**: `set_recipe_tag`, `set_reading` and `set_related_recipe` touch no content and mint no Version.
@@ -76,4 +74,4 @@ File it on `BatterWorks/Kamosu` with `gh issue create --repo BatterWorks/Kamosu`
 
 ## Finishing
 
-Update the cleanup note: add what you left open and why, and delete each item you closed. Finished work is not logged there; the recipe's own history and the issue tracker hold it. Report per task what changed, what you verified, and what you left, with each recipe's link and every French Food name you set. A new rule Aurélien settles along the way goes into the conventions note, not the cleanup note.
+Report per task what changed, what you verified, and what you left, with each recipe's link and every French Food name you set. A new rule Aurélien settles along the way goes into the conventions note.
