@@ -125,6 +125,7 @@ Every vault skill reads and writes BatterNotes through the Hatchdoor MCP tools, 
 ### The recipe library
 
 - **`/kamosu`**: any work on the household recipes in Kamosu: fixing or rebuilding a recipe, retitling, tagging, merging Foods, recording an Attempt. Every write is production, so it reads back each save, works one recipe at a time, and shows you anything broader than the recipe you named before applying it. Broken recipes are rebuilt from their own source (web page, YouTube description or on-screen card), never from memory. What is still open lives in the vault note "Kamosu - Recipe library cleanup". Run it from `~/coding/wayfinding`, where the Kamosu MCP server is registered.
+- **`/cooking`**: how to cook something in your own kitchen. It reads your kit from the vault and your past cooks from Kamosu, Attempt notes first, drafts the method for your burners and pans, and checks every number against the producer's own recipe, a technique source that tests, and the food-safety authority before answering. Saving what you cooked goes through `/kamosu`.
 
 ### Writing
 
