@@ -2,7 +2,7 @@
 name: kamosu
 description: "Work on the household recipe library in Kamosu through its MCP tools. Use for any recipe to save or add (a link, a video, a photo, pasted text), and to fix, rebuild, translate, retitle or tag a recipe, merge Foods, record an Attempt, or file a Kamosu bug found along the way."
 metadata:
-  version: "1.10.0"
+  version: "1.10.1"
 ---
 
 # Kamosu: the recipe library
