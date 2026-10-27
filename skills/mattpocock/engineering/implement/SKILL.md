@@ -39,21 +39,29 @@ Issue work requires a tracker the repo's instructions name and working access to
 
 ## 3. Implement and check
 
-Implement the agreed work without reopening its design. Call the Skill tool with "tdd" where possible at pre-agreed seams. Run typechecking and focused tests regularly, then run every repository-required validation and the full test suite.
+Implement the agreed work without reopening its design. Call the Skill tool with "tdd" where possible at pre-agreed seams. As you go, run the quick checks: typechecking, the formatter and linter where they are fast, and the focused tests around the change.
 
-All automated checks must pass before review.
+This step ends when the quick checks pass. The full test suite and every repository-required validation wait for step 4, after the review fixes.
 
-## 4. Review and fix
+## 4. Review, fix and run the full checks
 
 Call the Skill tool with "code-review" against the complete change since the recorded starting `HEAD`, including committed, staged, unstaged, and untracked work. Supply the issue or spec explicitly so the Spec axis does not depend on commit messages.
 
-Resolve every actionable finding: fix it or record why it does not apply. Rerun affected focused checks and every repository-required validation. No hard Standards finding, Spec finding, or blocker or major Defects finding may remain unresolved.
+Resolve every actionable finding: fix it or record why it does not apply, and rerun the quick checks the fixes touch. No hard Standards finding, Spec finding, or blocker or major Defects finding may remain unresolved.
+
+Then run the full test suite and every repository-required validation on the reviewed and fixed code. This run is the gate for live acceptance:
+
+- **The tree holds still while it runs.** Land no edit during the run. Record `git status --porcelain` and `git diff HEAD | sha256sum` before it starts and compare them when it ends. A run the tree changed under proves nothing: discard its result and run it again.
+- **A failure is fixed and the full run repeated.** A fix that only changes formatting, answers a lint finding, or corrects a test's own mistake goes straight back to the full run. A fix that changes behaviour goes back through "code-review" first, so nothing reaches live acceptance unreviewed.
+- **A failure that passes on an unchanged rerun is a flaky test.** Name the test in the ledger, or in the final report for spec work, and take the passing run.
+
+The step ends when one full run passes on a tree that did not change during it.
 
 ## 5. Run final live acceptance
 
-After review fixes, start or reach the documented live test environment. Exercise the changed behaviour through the app's real public interface and verify every applicable acceptance criterion. Record the commands, paths, URLs, or other evidence used.
+Once step 4's full run has passed, start or reach the documented live test environment. Exercise the changed behaviour through the app's real public interface and verify every applicable acceptance criterion. Record the commands, paths, URLs, or other evidence used.
 
-If live acceptance exposes a defect, fix it and return to automated checks and review before repeating live acceptance. The final live pass must exercise the reviewed code. A failed or skipped live pass blocks every remaining step.
+If live acceptance exposes a defect, fix it with the quick checks and return to step 4 before repeating live acceptance. The final live pass must exercise the reviewed code. A failed or skipped live pass blocks every remaining step.
 
 ## 6. Complete and ship
 

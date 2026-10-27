@@ -36,14 +36,21 @@ These are the same gates `/implement` holds for one ticket, held here for the wh
 4. Claim each ticket as it leaves the frontier, then use **implementer subagents** to implement it, each in its own worktree on its own branch. Each implementer subagent:
    - confirms its worktree is based on the integration branch before starting, and resets onto it if not;
    - calls the Skill tool with `tdd` to build the ticket;
-   - runs typechecking and focused tests as it goes, and every repository-required validation before reporting done;
+   - runs the quick checks as it goes, and has them passing before reporting done: typechecking, the formatter and linter where they are fast, and the focused tests around its ticket. The full suite and every repository-required validation wait for step 7;
    - merges the integration branch tip into its own branch before reporting done
 
 5. Once an **implementer subagent** completes, merge its work to the integration branch with a **merger subagent**.
 
 6. If this changes the **frontier** of available tickets, kick off more **implementer subagents** to work on the new tickets. This allows for maximum concurrency.
 
-7. Once all tickets are complete, run the full test suite and every repository-required validation on the integration branch. Then call the Skill tool with `code-review` on the integration branch, against the recorded starting `HEAD`, supplying the spec and tickets explicitly. Resolve every actionable finding in a single **implementer subagent**: fix it or record why it does not apply. No hard Standards finding, Spec finding, or blocker or major Defects finding may remain unresolved.
+7. Once all tickets are complete, call the Skill tool with `code-review` on the integration branch, against the recorded starting `HEAD`, supplying the spec and tickets explicitly. Resolve every actionable finding in a single **implementer subagent**: fix it or record why it does not apply, with the quick checks passing on the fixes. No hard Standards finding, Spec finding, or blocker or major Defects finding may remain unresolved.
+
+   Then run the full test suite and every repository-required validation on the reviewed and fixed integration branch. This run is the gate for live acceptance:
+   - The tree holds still while it runs: no merge or edit lands during it. Record `git status --porcelain` and `git diff HEAD | sha256sum` before it starts and compare them when it ends. A run the tree changed under proves nothing: discard its result and run it again.
+   - A failure is fixed through an implementer subagent and the full run repeated. A fix that only changes formatting, answers a lint finding, or corrects a test's own mistake goes straight back to the full run. A fix that changes behaviour goes back through `code-review` first, so nothing reaches live acceptance unreviewed.
+   - A failure that passes on an unchanged rerun is a flaky test. Name the test in the final report and take the passing run.
+
+   The step ends when one full run passes on a tree that did not change during it.
 
 8. Run final live acceptance yourself, not through a subagent. Start or reach the documented live test environment on the integration branch, exercise the changed behaviour through the app's real public interface, and verify every acceptance criterion of every ticket. Record the commands, paths, URLs, or other evidence used. If the live pass exposes a defect, fix it through an implementer subagent and return to step 7 before repeating it: the final live pass must exercise the reviewed code.
 
