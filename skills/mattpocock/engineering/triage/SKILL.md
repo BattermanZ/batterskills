@@ -52,6 +52,7 @@ The maintainer invokes `/triage` and describes what they want in natural languag
 - "Let's look at #42" (issue or PR)
 - "Move #42 to ready-for-agent"
 - "What's ready for agents to pick up?"
+- "/triage 584 585 598" or "Triage everything labelled needs-triage" (see [Several tickets in one run](#several-tickets-in-one-run))
 
 ## Show what needs attention
 
@@ -73,7 +74,9 @@ Show counts and a one-line summary per item. Let the maintainer pick.
 
 3. **Verify the claim.** Before any grilling, check that the claim holds up. For a bug, reproduce it from the reporter's steps. For a PR, confirm the diff does what it claims: check it out, run the relevant tests or commands. Report what happened: confirmed (with code path), failed, or insufficient detail (a strong `needs-info` signal). A confirmed verification makes a much stronger agent brief.
 
-   **Name the cause.** A bug brief names the cause, so a reproduction that leaves it opaque is half a verification: run the `/diagnosing-bugs` skill and carry its root cause into the brief. When the reporter supplied a cause, verify theirs rather than deriving your own, and report whether it held up.
+   **Reuse a recorded reproduction.** A ticket filed by `implement` carries one: the command or steps, what they showed, the files they exercise, and the commit they ran at. Take it as the verification and run nothing when all three hold: the commit is in this repo's history (`git cat-file -e <commit>` succeeds), the worktree held no uncommitted change then, and `git log --oneline <commit>..HEAD -- <files>` prints nothing. Otherwise rerun it once. Either way, report which.
+
+   **Name the cause.** A bug brief names the cause, so a reproduction that leaves it opaque is half a verification: run the `/diagnosing-bugs` skill and carry its root cause into the brief. When the reporter supplied a cause, verify theirs rather than deriving your own, and report whether it held up. A cause recorded with a reused reproduction is checked by reading the code path it names, with no new reproduction.
 
 4. **Grill (if needed).** If the request needs fleshing out, call the Skill tool twice, for "grilling" and "domain-modeling", and grill it into shape a round of questions at a time, sharpening domain terms and updating `GLOSSARY.md`/ADRs inline as decisions land.
 
@@ -86,6 +89,14 @@ Show counts and a one-line summary per item. Let the maintainer pick.
      - **Rejected (bug)**: give a polite explanation, then close.
      - **Rejected (enhancement)**: write to `.out-of-scope/`, link to it from a comment, then close ([OUT-OF-SCOPE.md](OUT-OF-SCOPE.md)).
    - `needs-triage`: apply the role. Optional comment if there's partial progress.
+
+## Several tickets in one run
+
+When the request names several issues, or a set such as everything labelled `needs-triage`, work through them in one run:
+
+1. **Fix the list first.** Named issues keep the order given. A set is listed oldest first from the tracker: for a label, every open issue carrying it. On GitHub, list the open issues and filter by label name yourself, since `gh`'s `--label` filter has missed issues; the set matches what `gh issue list` shows with that label. Show the list before starting.
+2. **Triage each in turn**, through every step of [Triage a specific issue or PR](#triage-a-specific-issue-or-pr), with its own recommendation and its own approval. Apply one ticket's outcome before opening the next. A ticket's recommendation and question are its own; never fold two tickets into one approval.
+3. **End with one summary**: a line per ticket with its number, title and what it became (its state, and whether a brief was posted or it was closed). A run stopped early lists the tickets left untouched.
 
 ## Quick state override
 

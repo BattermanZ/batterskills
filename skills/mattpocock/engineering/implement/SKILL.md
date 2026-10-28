@@ -6,6 +6,14 @@ disable-model-invocation: true
 
 Implement exactly one issue or spec through to a pushed commit. For issue work, the issue is the completion ledger.
 
+## Work found outside the ticket
+
+Anything the work turns up that needs doing but lies outside the issue or spec is a follow-up: a defect, or work the change made due, such as instructions, docs, a release step or a caller that depends on what changed. File each follow-up yourself as soon as it is clear, at any step; the final report names what you filed.
+
+1. **Reproduce a defect once and keep the reproduction**: the command or steps, what they showed, the files whose code they exercise, and the commit they ran at, noting any uncommitted change the worktree held then. A follow-up with nothing to reproduce skips this.
+2. **File it in the repo's tracker**, following the repo's own rules for tickets an agent writes, a public tracker's included. It carries the reproduction, an agent brief in the form [triage's AGENT-BRIEF.md](../triage/AGENT-BRIEF.md) sets out (naming the cause when you know it), and the repo's label for awaiting the maintainer's approval (`needs-triage` by default). Fetch it back to confirm it exists with that label, and record its number in this issue's ledger, or in the final report for spec work. When the repo names no tracker, list the follow-up in the final report instead.
+3. **Carry on with this ticket without fixing it**, unless the user says to fold it into the same change.
+
 ## 1. Establish the guardrails
 
 Read every applicable `AGENTS.md`, from the repository root down into the directories the work touches. Re-check for nested instructions as the implementation surface becomes known.
@@ -39,7 +47,7 @@ Issue work requires a tracker the repo's instructions name and working access to
 
 ## 3. Implement and check
 
-Implement the agreed work without reopening its design. Call the Skill tool with "tdd" where possible at pre-agreed seams. As you go, run the quick checks: typechecking, the formatter and linter where they are fast, and the focused tests around the change.
+Implement the agreed work without reopening its design. Call the Skill tool with "tdd" where possible at pre-agreed seams. A bug whose ledger records a reproduction starts its fix from that reproduction, with no fresh one first; the failing test the fix begins from is part of the fix. As you go, run the quick checks: typechecking, the formatter and linter where they are fast, and the focused tests around the change.
 
 This step ends when the quick checks pass. The full test suite and every repository-required validation wait for step 4, after the review fixes.
 
@@ -82,3 +90,12 @@ If the work sits on a branch other than the default branch, merge it in and dele
 Where the repo's instructions require a different landing path, such as merging only through a reviewed pull request, follow them instead and report what is left for a human.
 
 Close the issue, the way the tracker closes work, only after validation, checkbox completion, commit, push, the merge and branch deletion, and any required post-push checks have all succeeded. Fetch it once more and verify it is closed. On any failure, leave the issue open and report the exact blocking gate.
+
+## 7. Offer the follow-ups
+
+Once the work has shipped, ask one question per follow-up filed during this run, one per turn: start #N now, fold it into later work, or leave it.
+
+- **Start**: replace its awaiting-approval label with the repo's `ready-for-agent` label, and hand it to `ticket-queue 1 <N>` so it runs in a fresh session, never in this one's context. From a Herdr pane (`HERDR_ENV=1`), call the Skill tool with "herdr", split a new pane in the checkout, and run `ticket-queue 1 <N>` there once the checkout is back on its integration branch with a clean tree. The step ends when that pane shows the queue's line for the ticket, `[queue <time>] #<N> (pile named): <title>`. Outside Herdr, the report gives the user `ticket-queue 1 <N>` to run from a Herdr pane in the checkout.
+- **Fold it in later** or **leave it**: the ticket stays as filed. Report which.
+
+Inside a ticket-queue run (its prompt names a status file), ask before writing the `shipped` line, because the queue closes the pane once it reads it, and start no second queue on the same checkout: the label is the hand-off, and a queue choosing its own tickets takes #N in its turn. The report says so, and gives `ticket-queue 1 <N>` for after the queue ends, since a queue given named issues never chooses. Where ticket-queue does not serve the repo (it needs a GitHub checkout with a `dev` or `development` branch, as Kamosu and Hatchdoor have), the label is still set, and the report gives the user `/implement <N>` to run in a fresh session.
