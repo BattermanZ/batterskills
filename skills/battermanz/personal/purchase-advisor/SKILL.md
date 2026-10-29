@@ -29,7 +29,7 @@ Come out holding five findings:
 - The **second-hand verdict**: whether second-hand is a smart way to buy this category, and why. A mixer built to last decades points one way; a used OLED TV with burn-in risk and no warranty points the other. The verdict reaches the final report whichever way it points; the user decides with it, not under it.
 - The **spec mapping**: how the user's stated requirement probably translates into something searchable, plus the words the market itself uses for it in the language of their country. Write it down as a hypothesis. It reaches the hunt as a lead and never as a filter, because a scan that guesses the mapping wrong aims the whole hunt at the wrong corner of the market and no later step catches it. The hunt's job is to test the mapping, not to inherit it.
 - The **tester roll-call**: every tester you checked for this category, by name, each with what it said (product, score or verdict, year, link) or "not tested". Check, by name, at least, in this order:
-  1. French: UFC-Que Choisir and 60 Millions de consommateurs. The user is French, so these come first in the roll-call and in every evidence table.
+  1. French: UFC-Que Choisir and 60 Millions de consommateurs, and Les Numériques for electronics and appliances. The user is French, so these come first in the roll-call and in every evidence table.
   2. Dutch, where the user buys: Consumentenbond, and Tweakers for electronics.
   3. Belgian and German: Test-Aankoop/Test-Achats, Stiftung Warentest and Öko-Test.
   4. Which? (UK), CHOICE (Australia), Wirecutter, and the category's specialist (BabyGearLab for baby gear, RTINGS for screens and audio).
