@@ -16,7 +16,7 @@ Storage goes through the `effort-store` skill. Load it before writing anything. 
 
 ## 0. Resume or start
 
-**find** the product in the effort store before anything else. If an effort exists, offer to resume: the requirements and buying guide stand. Ask what has changed since; a moved budget or requirement reopens the interview for that field only, and **update** writes the new answer into Requirements as a dated section before the hunt launches. Location is re-asked on every resume regardless of what else changed; it is never carried forward from the saved note. When the Buying guide has no tester roll-call (an effort from before version 1.3.0) or the country has changed, build the roll-call for the current country as section 1 describes and **update** it into the Buying guide before the hunt. The run then re-enters at the hunt with the criteria as updated, and **update** adds the new results to the Shortlist note as a dated section above the old ones. Second-hand hunts especially span weeks; the saved effort is what makes waiting cheap.
+**find** the product in the effort store before anything else. If an effort exists, offer to resume: the requirements and buying guide stand. Ask what has changed since; a moved budget or requirement reopens the interview for that field only, and **update** writes the new answer into Requirements as a dated section before the hunt launches. Location is re-asked on every resume regardless of what else changed; it is never carried forward from the saved note. When the Buying guide has no tester roll-call (an effort from before version 1.3.0) or the location moved to another country, build the roll-call as section 1 describes and **update** it into the Buying guide before the hunt. The run then re-enters at the hunt with the criteria as updated, and **update** adds the new results to the Shortlist note as a dated section above the old ones. Second-hand hunts especially span weeks; the saved effort is what makes waiting cheap.
 
 ## 1. Scan
 
@@ -28,12 +28,15 @@ Come out holding five findings:
 - The price tiers: what more money actually buys, and where the returns go flat. These are the scan's estimate from a handful of pages, not the market's real floor, and the hunt reports the real one.
 - The **second-hand verdict**: whether second-hand is a smart way to buy this category, and why. A mixer built to last decades points one way; a used OLED TV with burn-in risk and no warranty points the other. The verdict reaches the final report whichever way it points; the user decides with it, not under it.
 - The **spec mapping**: how the user's stated requirement probably translates into something searchable, plus the words the market itself uses for it in the language of their country. Write it down as a hypothesis. It reaches the hunt as a lead and never as a filter, because a scan that guesses the mapping wrong aims the whole hunt at the wrong corner of the market and no later step catches it. The hunt's job is to test the mapping, not to inherit it.
-- The **tester roll-call**: every tester you checked for this category, by name, each with what it said (product, score or verdict, year, link) or "not tested". Check, by name, at least:
-  - the consumer organisations and test magazines of the user's country and every country it borders (for a Dutch user: Consumentenbond, Test-Aankoop/Test-Achats, Stiftung Warentest, Öko-Test; a French user adds UFC-Que Choisir and 60 Millions de consommateurs as home testers);
-  - Which? (UK) and CHOICE (Australia), which often test what the continental organisations skip;
-  - the independent testers that cover the category: Wirecutter, plus the category's specialist and the country's local one (BabyGearLab for baby gear, RTINGS for screens and audio, Tweakers in the Netherlands for electronics).
+- The **tester roll-call**: every tester you checked for this category, by name, each with what it said (product, score or verdict, year, link) or "not tested". Check, by name, at least, in this order:
+  1. French: UFC-Que Choisir and 60 Millions de consommateurs. The user is French, so these come first in the roll-call and in every evidence table.
+  2. Dutch, where the user buys: Consumentenbond, and Tweakers for electronics.
+  3. Belgian and German: Test-Aankoop/Test-Achats, Stiftung Warentest and Öko-Test.
+  4. Which? (UK), CHOICE (Australia), Wirecutter, and the category's specialist (BabyGearLab for baby gear, RTINGS for screens and audio).
 
-  The country comes from the effort store adapter's default location, else from the request, else the likeliest one from the request's language, which the interview then confirms. The **relay rule**: a result republished by another outlet counts once, under the organisation that ran the test, and the roll-call says "relays X" against the outlet that only reprinted it. A joint test that several consumer organisations publish from one shared lab run (the ICRT tests behind Consumentenbond, Test-Aankoop, Stiftung Warentest, Which?, UFC-Que Choisir and others) is one source too: the credits or the methodology note say so, and matching scores with the same test date across organisations point to it. A paywalled verdict still counts when its headline result is readable; note what the paywall hid.
+  This list is fixed and checked on every run. When the user buys from another country, add that country's consumer organisation and local tester on top.
+
+  The **relay rule**: a result republished by another outlet counts once, under the organisation that ran the test, and the roll-call says "relays X" against the outlet that only reprinted it. A joint test that several consumer organisations publish from one shared lab run (the ICRT tests behind Consumentenbond, Test-Aankoop, Stiftung Warentest, Which?, UFC-Que Choisir and others) is one source too: the credits or the methodology note say so, and matching scores with the same test date across organisations point to it. A paywalled verdict still counts when its headline result is readable; note what the paywall hid.
 
 Done when you can write the buying guide, the roll-call included, and name the interview questions that would change the hunt. Show the user the roll-call before the first interview question: they often know a tester you missed.
 
@@ -46,7 +49,7 @@ The target paces, it does not truncate. Four fields are load-bearing and the hun
 - **Use**: what this thing will actually do, day to day.
 - **Budget**: a number or a range, asked plainly.
 - **Dealbreakers**: hard vetoes, including "new only" if second-hand is out for reasons of their own.
-- **Location**: city and country, asked every run, plus whether pickup radius or delivery bounds the search. When the effort store's adapter supplies a default location, offer it as the recommended answer to confirm rather than asking cold. An answer in another country than the scan assumed means building the roll-call again for that country before the hunt.
+- **Location**: city and country, asked every run, plus whether pickup radius or delivery bounds the search. When the effort store's adapter supplies a default location, offer it as the recommended answer to confirm rather than asking cold. An answer outside the Netherlands adds that country's testers to the roll-call before the hunt.
 
 Each load-bearing field is either answered by the user or stated as an assumption they explicitly confirmed. Everything else may be assumed and stated.
 
@@ -102,7 +105,7 @@ Done when every shortlisted candidate has a fetched verdict (alive, price, avail
 - One recommendation, argued against the requirements: why this one, at this price, from this seller.
 - Two to four alternatives, each tagged "pick this instead if ...", new and second-hand mixed in one ranking, each with its live-checked price and link.
 - The evidence behind the recommendation, including its absence. A pick that meets every requirement and has never been reviewed is offered as reasoned rather than proven, and says so in those terms.
-- An **evidence table** per finalist (the recommendation and each alternative): one row per roll-call tester and per other independent test found, with what it found (score or verdict, year, link), "not tested", or "relays X" under the relay rule, plus a last line counting the independent sources. A recommendation backed by one source shows it there, and the argument for it says so.
+- An **evidence table** per finalist (the recommendation and each alternative): one row per roll-call tester, in roll-call order, and per other independent test found, with what it found (score or verdict, year, link), "not tested", or "relays X" under the relay rule, plus a last line counting the independent sources. A recommendation backed by one source shows it there, and the argument for it says so.
 - The second-hand verdict, even when every pick is new.
 - What was searched and not found, and anything that could not be verified.
 
