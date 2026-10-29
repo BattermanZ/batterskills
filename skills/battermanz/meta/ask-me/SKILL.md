@@ -3,7 +3,7 @@ name: ask-me
 description: Ask which skill or flow fits your situation. A router over the batterskills catalogue.
 disable-model-invocation: true
 metadata:
-  version: "1.5.2"
+  version: "1.6.0"
 ---
 
 # Ask me
@@ -96,7 +96,7 @@ The engineering flows assume the target repo's instructions name its issue track
 
 ## Beyond engineering
 
-The catalogue reaches past the main flow into five more trees: buying, the vault, the recipe library, writing, and UI. None of them runs through `/grill-with-docs` or `/implement`. Buying has a flow of its own; the rest are single skills you pick by situation.
+The catalogue reaches past the main flow into six more trees: buying, the vault, the recipe library, writing, UI, and printing. None of them runs through `/grill-with-docs` or `/implement`. Buying has a flow of its own; the rest are single skills you pick by situation.
 
 Most of these are **model-invoked**: the agent reaches for them the moment the request fits, so describing the job is enough. The four marked **user-invoked** below never fire on their own, and you type them.
 
@@ -135,6 +135,10 @@ The `unslop` rules cover all prose, always. Hooks inject them, so don't invoke t
 - **`/writing-project-readmes`**: write, tighten or audit a README for an app, CLI, service or library. It treats the README as the front page: a pitch that names the differentiator, who it's for and who it isn't, a quick start matching the defaults, and troubleshooting written from the symptom. It also answers "is this README any good" against its rubric.
 
 For skills and `AGENTS.md`, use `/writing-for-agents` (under Standalone).
+
+### Printing away from home
+
+- **`/print-page`**: send a PDF and say "print page", and it lands on print.battercloud.cc behind your password, ready to open and print on a shop computer with no phone or USB stick. It checks the page from outside before handing you the address, removes the file when you say it's printed, and the page deletes anything older than 24 hours anyway. It runs from a Claude Code session on BatterCode, which can reach batterdock.
 
 ### Building UI
 
