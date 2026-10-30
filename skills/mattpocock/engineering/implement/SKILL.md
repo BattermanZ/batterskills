@@ -8,7 +8,9 @@ Implement exactly one issue or spec through to a pushed commit. For issue work, 
 
 ## Work found outside the ticket
 
-Anything the work turns up that needs doing but lies outside the issue or spec is a follow-up: a defect, or work the change made due, such as instructions, docs, a release step or a caller that depends on what changed. File each follow-up yourself as soon as it is clear, at any step; the final report names what you filed.
+Anything the work turns up that needs doing but lies outside the issue or spec is a follow-up: a defect, or work the change made due, such as a release step or a caller that depends on what changed. File each follow-up yourself as soon as it is clear, at any step; the final report names what you filed.
+
+**Stale documentation is not a follow-up.** A doc, runbook, README, instruction or memory file that is wrong, whether this change made it so or it already was, is fixed in this session, and the final report names what you fixed. A ticket costs a whole fresh session; a stale paragraph costs a few lines here.
 
 1. **Reproduce a defect once and keep the reproduction**: the command or steps, what they showed, the files whose code they exercise, and the commit they ran at, noting any uncommitted change the worktree held then. A follow-up with nothing to reproduce skips this.
 2. **File it in the repo's tracker**, following the repo's own rules for tickets an agent writes, a public tracker's included. It carries the reproduction, an agent brief in the form [triage's AGENT-BRIEF.md](../triage/AGENT-BRIEF.md) sets out (naming the cause when you know it), and the repo's label for awaiting the maintainer's approval (`needs-triage` by default). Fetch it back to confirm it exists with that label, and record its number in this issue's ledger, or in the final report for spec work. When the repo names no tracker, list the follow-up in the final report instead.
