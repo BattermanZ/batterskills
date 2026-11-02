@@ -22,7 +22,7 @@ Read every applicable `AGENTS.md`, from the repository root down into the direct
 
 Before changing code, identify from those instructions how to start or reach the app's live test environment and how to exercise its public interface. A production environment is not a test environment unless the user explicitly authorizes it. If no usable live-test procedure is documented, stop and report the missing guardrail.
 
-Find which issue tracker the repo uses and how to operate it. The repo's instructions say: `AGENTS.md`, the machine-local `AGENTS.local.md`, or `docs/agents/issue-tracker.md`. This skill names no tracker of its own.
+Read the repo's `AGENTS.md` and `AGENTS.local.md` if present for its issue-tracker instructions and coding-standards pointers. Follow the references they name, at the phases the repo assigns them. Ask the user for a needed pointer only when neither instruction file supplies it. An explicit statement that there is no separate standards document is sufficient. This skill names no tracker of its own.
 
 Inspect the worktree and branch before claiming the work. On a clean worktree, record the starting `HEAD` as the review fixed point and confirm pushing this branch will not include unrelated unpushed commits. If the current branch is not the repo's default branch, record the default branch too: step 6 merges the work into it, so the branch must carry nothing but this work on top of the default branch.
 

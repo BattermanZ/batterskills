@@ -3,7 +3,7 @@ name: ask-me
 description: Ask which skill or flow fits your situation. A router over the batterskills catalogue.
 disable-model-invocation: true
 metadata:
-  version: "1.6.0"
+  version: "1.6.1"
 ---
 
 # Ask me
@@ -92,7 +92,7 @@ Off the main flow entirely.
 
 ## Precondition
 
-The engineering flows assume the target repo's instructions name its issue tracker and triage labels: `AGENTS.md`, the machine-local `AGENTS.local.md`, or `docs/agents/issue-tracker.md`. When none of them does, ask which tracker to use before publishing tickets or claiming an issue. No skill here is tied to one tracker.
+The engineering flows read the target repo's `AGENTS.md` and `AGENTS.local.md` if present for its issue-tracker instructions, triage labels and coding-standards pointers, then follow the references they name. Ask the user for a needed pointer only when neither instruction file supplies it. An explicit statement that there is no separate standards document is sufficient. No skill here is tied to one tracker.
 
 ## Beyond engineering
 

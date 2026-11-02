@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.
 
-The issue tracker and triage label vocabulary should have been provided to you. If not, look for `docs/agents/issue-tracker.md` in the target repo; when there is none, ask the user which tracker to use.
+Read the target repo's `AGENTS.md` and `AGENTS.local.md` if present for its issue-tracker instructions and triage labels, then follow the references they name. Ask the user for a needed pointer only when neither instruction file supplies it.
 
 ## Process
 

@@ -11,7 +11,7 @@ Three-axis review of the complete change since a fixed point, including committe
 
 The axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
-The issue tracker should have been provided to you via `docs/agents/issue-tracker.md`; if it is missing, ask the user which tracker to use.
+Read the repo's `AGENTS.md` and `AGENTS.local.md` if present for its issue-tracker instructions and coding-standards pointers. Follow the references they name. Ask the user only when steps 2 or 3 below find no pointer in either instruction file. An explicit statement that there is no separate standards document is sufficient.
 
 ## Process
 
@@ -35,13 +35,13 @@ Before going further, confirm the fixed point resolves (`git rev-parse <fixed-po
 Look for the originating spec, in this order:
 
 1. An issue, spec URL, or path supplied by the user or calling skill.
-2. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.); fetch them via the workflow in `docs/agents/issue-tracker.md`.
+2. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.); fetch them via the tracker workflow named by the repo's instructions.
 3. A spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
 4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
 
 ### 3. Identify the standards sources
 
-Anything in the repo that documents how code should be written, such as `CODING_STANDARDS.md` or `CONTRIBUTING.md`.
+Read the standards sources named by the repo's instructions, including rules in the instructions themselves. When they state that there is no separate standards document, use those rules and the baseline below.
 
 On top of whatever the repo documents, the Standards axis always carries the **smell baseline** below: a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. Two rules bind it:
 
