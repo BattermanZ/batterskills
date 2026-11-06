@@ -93,11 +93,14 @@ Where the repo's instructions require a different landing path, such as merging 
 
 Close the issue, the way the tracker closes work, only after validation, checkbox completion, commit, push, the merge and branch deletion, and any required post-push checks have all succeeded. Fetch it once more and verify it is closed. On any failure, leave the issue open and report the exact blocking gate.
 
-## 7. Offer the follow-ups
+## 7. Hand on the follow-ups
 
-Once the work has shipped, ask one question per follow-up filed during this run, one per turn: start #N now, fold it into later work, or leave it.
+Once the work has shipped, hand every follow-up filed during this run to an agent, without asking. The user has approved this once for all follow-ups, so a question about one is never asked.
 
-- **Start**: replace its awaiting-approval label with the repo's `ready-for-agent` label, and hand it to `ticket-queue 1 <N>` so it runs in a fresh session, never in this one's context. From a Herdr pane (`HERDR_ENV=1`), call the Skill tool with "herdr", split a new pane in the checkout, and run `ticket-queue 1 <N>` there once the checkout is back on its integration branch with a clean tree. The step ends when that pane shows the queue's line for the ticket, `[queue <time>] #<N> (pile named): <title>`. Outside Herdr, the report gives the user `ticket-queue 1 <N>` to run from a Herdr pane in the checkout.
-- **Fold it in later** or **leave it**: the ticket stays as filed. Report which.
+For each one, replace its awaiting-approval label with the repo's `ready-for-agent` label and fetch it back to confirm the label. Then:
 
-Inside a ticket-queue run (its prompt names a status file), ask before writing the `shipped` line, because the queue closes the pane once it reads it, and start no second queue on the same checkout: the label is the hand-off, and a queue choosing its own tickets takes #N in its turn. The report says so, and gives `ticket-queue 1 <N>` for after the queue ends, since a queue given named issues never chooses. Where ticket-queue does not serve the repo (it needs a GitHub checkout with a `dev` or `development` branch, as Kamosu and Hatchdoor have), the label is still set, and the report gives the user `/implement <N>` to run in a fresh session.
+- **Inside a ticket-queue run** (its prompt names a status file), relabel before writing the `shipped` line, because the queue closes the pane once it reads that line. The label is the hand-off: a queue choosing its own tickets takes each one in its turn. Start no second queue on the same checkout. A queue given named issues never chooses, so the report also gives `ticket-queue <count> <N…>` for after it ends.
+- **Otherwise, from a Herdr pane** (`HERDR_ENV=1`) in a repo ticket-queue serves (a GitHub checkout with a `dev` or `development` branch, as Kamosu and Hatchdoor have): call the Skill tool with "herdr", split a new pane in the checkout, and once the checkout is back on its integration branch with a clean tree, run `ticket-queue <count> <N…>` there, naming every follow-up. The step ends when that pane shows the queue's line for the first one, `[queue <time>] #<N> (pile named): <title>`.
+- **Otherwise**, the report gives `ticket-queue <count> <N…>` to run from a Herdr pane in the checkout, or `/implement <N>` for each in a fresh session where ticket-queue does not serve the repo.
+
+The final report lists each follow-up and where it went.
