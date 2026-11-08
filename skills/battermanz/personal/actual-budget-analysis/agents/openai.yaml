@@ -1,0 +1,4 @@
+interface:
+  display_name: "Actual Budget Analysis"
+  short_description: "Reconcile and explain Actual Budget data"
+  default_prompt: "Use $actual-budget-analysis to answer this financial question from Actual Budget with reconciled, sanity-checked numbers."

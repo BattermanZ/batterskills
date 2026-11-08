@@ -3,7 +3,7 @@ name: ask-me
 description: Ask which skill or flow fits your situation. A router over the batterskills catalogue.
 disable-model-invocation: true
 metadata:
-  version: "1.6.1"
+  version: "1.7.0"
 ---
 
 # Ask me
@@ -96,7 +96,7 @@ The engineering flows read the target repo's `AGENTS.md` and `AGENTS.local.md` i
 
 ## Beyond engineering
 
-The catalogue reaches past the main flow into six more trees: buying, the vault, the recipe library, writing, UI, and printing. None of them runs through `/grill-with-docs` or `/implement`. Buying has a flow of its own; the rest are single skills you pick by situation.
+The catalogue reaches past the main flow into seven more trees: buying, the vault, the recipe library, money, writing, UI, and printing. None of them runs through `/grill-with-docs` or `/implement`. Buying has a flow of its own; the rest are single skills you pick by situation.
 
 Most of these are **model-invoked**: the agent reaches for them the moment the request fits, so describing the job is enough. The four marked **user-invoked** below never fire on their own, and you type them.
 
@@ -126,6 +126,10 @@ Every vault skill reads and writes BatterNotes through the Hatchdoor MCP tools, 
 
 - **`/kamosu`**: any work on the household recipes in Kamosu: fixing or rebuilding a recipe, retitling, tagging, merging Foods, recording an Attempt. Every write is production, so it reads back each save, works one recipe at a time, and shows you anything broader than the recipe you named before applying it. Broken recipes are rebuilt from their own source (web page, YouTube description or on-screen card), never from memory. What is still open lives in the vault note "Kamosu - Recipe library cleanup". Run it from `~/coding/wayfinding`, where the Kamosu MCP server is registered.
 - **`/cooking`**: how to cook something in your own kitchen. It reads your kit from the vault and your past cooks from Kamosu, Attempt notes first, drafts the method for your burners and pans, and checks every number against the producer's own recipe, a technique source that tests, and the food-safety authority before answering. Saving what you cooked goes through `/kamosu`.
+
+### Money
+
+- **`actual-budget-analysis`**: any question about the money in Actual Budget (spending, income, transfers, refunds, balances, trends). It pins the question to one metric first, because gross spending, net spending, funding and cash flow give different answers, then reads the raw transactions before totalling and checks that the months sum to the total before it answers. It reads only, and it needs a session with the Actual Budget MCP connected.
 
 ### Writing
 
