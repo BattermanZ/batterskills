@@ -1,0 +1,5 @@
+interface:
+  display_name: "Hill Climbing"
+  short_description: "Improve something in scored rounds, keeping the best version"
+policy:
+  allow_implicit_invocation: false
