@@ -20,14 +20,14 @@ Communication to and from subagents should be sparse. Communicate primarily thro
 
 These are the same gates `/implement` holds for one ticket, held here for the whole spec. A failed gate blocks every step after it.
 
-- **Guardrails first.** Read every applicable `AGENTS.md`, from the repository root down into the directories the tickets touch. Identify from them how to start or reach the app's live test environment and how to exercise its public interface. A production environment is not a test environment unless the user explicitly authorizes it. If no usable live-test procedure is documented, stop and report the missing guardrail before any subagent starts.
+- **Guardrails first.** Read every applicable `AGENTS.md`, from the repository root down into the directories the tickets touch. Identify from them how to start or reach the app's live test environment and how to exercise its public interface. A production environment is not a test environment unless the user explicitly authorizes it. If no usable live-test procedure is documented, settle one before any subagent starts, by the rule in [`/implement` step 1](../implement/SKILL.md), judged against every ticket read whole. In short: a fully disposable test runs without asking, any other test waits for the user's approval of the proposed procedure, that one approval covers the whole run, and a procedure that later changes is checked against the rule again. Where that rule says step 5, read step 8 here; where it says the ledger, read the final report.
 - **Clean start.** Require a clean worktree and record the starting `HEAD` as the review fixed point. Stop and ask the user to resolve or explicitly include any pre-existing work.
 - **Claim before building.** Read each ticket whole, the body and every comment, since the brief and the decisions that reshaped it are often comments. A ticket already assigned to someone needs the user's explicit green light; invoking this skill is not that green light. Assign each ticket to yourself, the way the issue tracker assigns work, when its implementer subagent starts, and verify the assignment took.
 - **Live acceptance decides done.** A ticket is resolved, and its checkboxes ticked, only on evidence from the live pass in step 8. Passing tests and a clean review are not that evidence.
 
 ## Steps
 
-1. Read the spec and tickets to understand the task graph. Establish the guardrails and the clean start above.
+1. Read the spec and every ticket whole, the body and every comment, to understand the task graph. Establish the guardrails and the clean start above.
 
 2. (optional) Use an **exploration subagent** to conduct any exploration required by the tickets - relevant codebase files or external documentation. Ensure the exploration subagent can save files - it should save its markdown notes in a directory outside the repo, accessible by all future subagents. This lets **implementer subagents** focus on implementation rather than exploration.
 
@@ -52,7 +52,7 @@ These are the same gates `/implement` holds for one ticket, held here for the wh
 
    The step ends when one full run passes on a tree that did not change during it.
 
-8. Run final live acceptance yourself, not through a subagent. Start or reach the documented live test environment on the integration branch, exercise the changed behaviour through the app's real public interface, and verify every acceptance criterion of every ticket. Record the commands, paths, URLs, or other evidence used. If the live pass exposes a defect, fix it through an implementer subagent and return to step 7 before repeating it: the final live pass must exercise the reviewed code.
+8. Run final live acceptance yourself, not through a subagent. Start or reach the live test environment the guardrails settled, on the integration branch: the documented one, the disposable one you designed, or the one the user approved. Exercise the changed behaviour through the app's real public interface and verify every acceptance criterion of every ticket. Record the commands, paths, URLs, or other evidence used. When the pass ends, pass or fail, remove any disposable space this run created for it, stop its fixture processes by their saved PIDs, and record that in the final report. If the live pass exposes a defect, fix it through an implementer subagent and return to step 7 before repeating it: the final live pass must exercise the reviewed code.
 
 9. Tick each ticket's implementation and acceptance checkboxes, wherever the brief sits, only where the live-pass evidence proves them. Fetch each ticket again and verify every required checkbox is checked; any unchecked required item blocks the release.
 
