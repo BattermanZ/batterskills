@@ -20,7 +20,22 @@ Anything the work turns up that needs doing but lies outside the issue or spec i
 
 Read every applicable `AGENTS.md`, from the repository root down into the directories the work touches. Re-check for nested instructions as the implementation surface becomes known.
 
-Before changing code, identify from those instructions how to start or reach the app's live test environment and how to exercise its public interface. A production environment is not a test environment unless the user explicitly authorizes it. If no usable live-test procedure is documented, stop and report the missing guardrail.
+Before changing code, identify from those instructions how to start or reach the app's live test environment and how to exercise its public interface. A production environment is not a test environment unless the user explicitly authorizes it.
+
+If no usable live-test procedure is documented, decide how to test once you know the work: after step 2 has resolved and read it, and before changing code. Ask whether the change can be exercised entirely in disposable space. Disposable means three things at once: this run creates it, it sits under the session scratchpad or a temp directory, and this run removes it when step 5 ends, pass or fail. A throwaway Git repo with no remote outside that space, a fixture process started by this run and stopped by its saved PID, and an agent session pointed at a temporary copy of its settings and config directory all qualify. A test is not disposable when it touches any of:
+
+- another host, which includes anything reached over SSH;
+- a running service or container this run did not start;
+- a remote or a tracker outside the disposable space;
+- real user data;
+- shared configuration in the home directory (agent settings, hooks, skill links, shell startup files) rather than a temporary copy of it;
+- anything else outside the disposable space: a message or alert that reaches a person, a paid call to an outside service, a write elsewhere on the machine.
+
+**A disposable test needs no approval.** Design it, record it in the issue's ledger (or the final report for spec work), run it at step 5, and carry on without asking.
+
+**Any other test needs the user's approval.** Stop, propose the procedure, and say that the repo documents none. Approving the proposed procedure clears this gate for the whole run: record the approved procedure in the ledger (or the final report for spec work) and continue to the end of the run with no second stop to confirm it.
+
+The approval, or the disposable verdict, covers the procedure as recorded. If the procedure has to change, check the new one against the list above again: still disposable, or within what the user approved, carries on; anything new that touches a real system stops and asks.
 
 Read the repo's `AGENTS.md` and `AGENTS.local.md` if present for its issue-tracker instructions and coding-standards pointers. Follow the references they name, at the phases the repo assigns them. Ask the user for a needed pointer only when neither instruction file supplies it. An explicit statement that there is no separate standards document is sufficient. This skill names no tracker of its own.
 
@@ -69,7 +84,7 @@ The step ends when one full run passes on a tree that did not change during it.
 
 ## 5. Run final live acceptance
 
-Once step 4's full run has passed, start or reach the documented live test environment. Exercise the changed behaviour through the app's real public interface and verify every applicable acceptance criterion. Record the commands, paths, URLs, or other evidence used.
+Once step 4's full run has passed, start or reach the live test environment step 1 settled: the documented one, the disposable one you designed, or the one the user approved. Exercise the changed behaviour through the app's real public interface and verify every applicable acceptance criterion. Record the commands, paths, URLs, or other evidence used. When the pass ends, pass or fail, remove any disposable space this run created for it, stop its fixture processes by their saved PIDs, and record that in the ledger.
 
 If live acceptance exposes a defect, fix it with the quick checks and return to step 4 before repeating live acceptance. The final live pass must exercise the reviewed code. A failed or skipped live pass blocks every remaining step.
 
