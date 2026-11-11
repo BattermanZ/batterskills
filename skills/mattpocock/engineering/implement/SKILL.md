@@ -37,6 +37,8 @@ If no usable live-test procedure is documented, decide how to test once you know
 
 The approval, or the disposable verdict, covers the procedure as recorded. If the procedure has to change, check the new one against the list above again: still disposable, or within what the user approved, carries on; anything new that touches a real system stops and asks.
 
+Work that looks docs-only, as step 4 defines it, can leave this decision until step 4 picks the path. Docs-only work has no live pass, so it needs no procedure and no approval. If step 4 picks the full-run path instead, settle the procedure by this rule before step 5.
+
 Read the repo's `AGENTS.md` and `AGENTS.local.md` if present for its issue-tracker instructions and coding-standards pointers. Follow the references they name, at the phases the repo assigns them. Ask the user for a needed pointer only when neither instruction file supplies it. An explicit statement that there is no separate standards document is sufficient. This skill names no tracker of its own.
 
 Inspect the worktree and branch before claiming the work. On a clean worktree, record the starting `HEAD` as the review fixed point and confirm pushing this branch will not include unrelated unpushed commits. If the current branch is not the repo's default branch, record the default branch too: step 6 merges the work into it, so the branch must carry nothing but this work on top of the default branch.
@@ -44,7 +46,7 @@ Inspect the worktree and branch before claiming the work. On a clean worktree, r
 A dirty worktree is a **handover** or a stop. It is a handover when all three hold:
 
 - every uncommitted file belongs to one issue, and that issue is assigned to you;
-- that issue's ledger records the automated checks, the review and the live pass as done;
+- that issue's ledger records the automated checks, the review and the live pass as done, or the live pass as skipped for docs-only work;
 - no uncommitted file was modified after that record was written.
 
 On a handover, resume that issue at step 6. Its ledger is the evidence: the checks, the review and the live pass stand as recorded. Ask the user only for what the ledger still shows outstanding, such as a check on their own device. Once it has shipped, start any further work from step 1 on the clean worktree.
@@ -66,7 +68,7 @@ Issue work requires a tracker the repo's instructions name and working access to
 
 Implement the agreed work without reopening its design. Call the Skill tool with "tdd" where possible at pre-agreed seams. A bug whose ledger records a reproduction starts its fix from that reproduction, with no fresh one first; the failing test the fix begins from is part of the fix. As you go, run the quick checks: typechecking, the formatter and linter where they are fast, and the focused tests around the change.
 
-This step ends when the quick checks pass. The full test suite and every repository-required validation wait for step 4, after the review fixes.
+This step ends when the quick checks pass. The full test suite does not run in this step, and neither does any repository-required validation: both wait for step 4, after the review fixes.
 
 ## 4. Review, fix and run the full checks
 
@@ -74,25 +76,34 @@ Call the Skill tool with "code-review" against the complete change since the rec
 
 Resolve every actionable finding: fix it or record why it does not apply, and rerun the quick checks the fixes touch. No hard Standards finding, Spec finding, or blocker or major Defects finding may remain unresolved.
 
-Then run the full test suite and every repository-required validation on the reviewed and fixed code. This run is the gate for live acceptance:
+Then decide which path the checks take, the **docs-only path** or the **full-run path**, and record it in the ledger, or in the final report for spec work.
+
+**The docs-only path** is for a change to documentation and nothing else. The repo decides what counts as documentation: its `AGENTS.md` names it, or its check command detects it. Where the repo has no such rule, a change is docs-only when every changed path is Markdown outside any directory the build reads; under this fallback, Markdown that a tool or an agent loads as instructions, such as a skill or a prompt, is not documentation. Docs-only work runs the repo's fast text checks (a Markdown linter, a link or spelling check, whatever the repo has) and every repository-required validation that is not a build or a test suite. It skips the full suite, the dev server and live acceptance, and goes on to step 5, which records the skip.
+
+**The full-run path** is for every other change. Run the full test suite and every repository-required validation once, on the reviewed and fixed code. This run is the gate for live acceptance:
 
 - **The tree holds still while it runs.** Land no edit during the run. Record `git status --porcelain` and `git diff HEAD | sha256sum` before it starts and compare them when it ends. A run the tree changed under proves nothing: discard its result and run it again.
-- **A failure is fixed and the full run repeated.** A fix that only changes formatting, answers a lint finding, or corrects a test's own mistake goes straight back to the full run. A fix that changes behaviour goes back through "code-review" first, so nothing reaches live acceptance unreviewed.
+- **A failure gets a fix, and the fix decides what reruns.** A fix that only changes formatting, answers a lint finding without changing behaviour, or corrects a test's own mistake reruns only what failed: the failing test, the lint or the format step, not the whole suite. A fix that changes behaviour, a lint fix included, goes back through "code-review" first, so nothing reaches live acceptance unreviewed, and that path ends in a new full run.
 - **A failure that passes on an unchanged rerun is a flaky test.** Name the test in the ledger, or in the final report for spec work, and take the passing run.
+- **The full run is a command of its own.** Never chain it with `git commit`, a push or a merge: that only repeats a run that just passed. Step 6's rerun after a merge that was not a fast-forward is not chaining; it runs alone, before the push. Neither are the repo's own commit-time checks, such as a pre-commit hook: they run as the repo set them, and this skill never bypasses them.
 
-The step ends when one full run passes on a tree that did not change during it.
+A repo rule that asks for more wins over both the docs-only path and the rerun of the failed part only: a full suite or a live pass that its `AGENTS.md` requires before every merge still runs.
+
+The step ends when one full run has passed on a tree that did not change during it, or every failure in it had a fix that changed no behaviour and each failed part has since passed on its rerun.
 
 ## 5. Run final live acceptance
 
+On the docs-only path, skip this step: record in the ledger that the live pass was skipped because the change is docs-only, and go to step 6.
+
 Once step 4's full run has passed, start or reach the live test environment step 1 settled: the documented one, the disposable one you designed, or the one the user approved. Exercise the changed behaviour through the app's real public interface and verify every applicable acceptance criterion. Record the commands, paths, URLs, or other evidence used. When the pass ends, pass or fail, remove any disposable space this run created for it, stop its fixture processes by their saved PIDs, and record that in the ledger.
 
-If live acceptance exposes a defect, fix it with the quick checks and return to step 4 before repeating live acceptance. The final live pass must exercise the reviewed code. A failed or skipped live pass blocks every remaining step.
+If live acceptance exposes a defect, fix it with the quick checks and return to step 4 before repeating live acceptance. The final live pass must exercise the reviewed code. On the full-run path, a failed or skipped live pass blocks every remaining step.
 
 ## 6. Complete and ship
 
 For issue work:
 
-1. Check off each implementation or acceptance checkbox only when the live-pass evidence proves it complete. The checkboxes sit wherever the brief does, a comment as readily as the body; tick them in place there.
+1. Check off each implementation or acceptance checkbox only when the live-pass evidence proves it complete, or, for docs-only work, the text checks and the diff. The checkboxes sit wherever the brief does, a comment as readily as the body; tick them in place there.
 2. Fetch the issue again, comments included, and verify every required checkbox is checked. Any unchecked required item blocks the release.
 
 Then inspect the final diff, commit only the intended work to the current branch, push that branch, and verify the remote contains the commit. Follow all repository-specific commit, push, deployment, and post-push validation gates in `AGENTS.md`.
@@ -100,7 +111,7 @@ Then inspect the final diff, commit only the intended work to the current branch
 If the work sits on a branch other than the default branch, merge it in and delete it:
 
 1. Fetch the remote. Merge the work branch into the default branch, fast-forward when the default branch has not moved, a merge commit when it has. A conflict is a stop: abort the merge, leave both branches as they are, and report it.
-2. When the merge was not a fast-forward, rerun every repository-required validation on the merged result before pushing it.
+2. When the merge was not a fast-forward, rerun every repository-required validation on the merged result, as a command of its own, before pushing it. Docs-only work reruns the checks step 4 gave it instead.
 3. Push the default branch and verify the remote contains the merge.
 4. Delete the work branch on the remote and locally. If it is checked out in a worktree you created for this work, remove that worktree first. A branch with an open pull request gets that pull request closed as merged by the tracker, or closed by you with a comment pointing at the merge commit.
 
