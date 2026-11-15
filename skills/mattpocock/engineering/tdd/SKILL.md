@@ -23,6 +23,8 @@ A **seam** is the public boundary you test at: the interface where you observe b
 
 Ask: "What's the public interface, and which seams should we test?"
 
+A calling skill may settle the seams instead of the user. Under `/implement` or `/implement-spec`, use the seams that skill settles (the ones the issue or spec records, else the agent's own pick) and records in its ledger or report; that record is the confirmation, so do not ask. Run on its own, this skill still asks.
+
 When the shape of that interface is itself in question (how deep the module is, where the seam belongs, what the interface should expose), call the Skill tool with "codebase-design" for the vocabulary. It is the shared source of the module, interface, depth, seam, adapter, leverage and locality terms, and it is a reference to consult, not a session to run.
 
 ## Anti-patterns

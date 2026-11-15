@@ -26,10 +26,22 @@ If no usable live-test procedure is documented, decide how to test once you know
 
 - another host, which includes anything reached over SSH;
 - a running service or container this run did not start;
+- a container this run started that fails any condition of the throwaway-container rule below;
 - a remote or a tracker outside the disposable space;
 - real user data;
 - shared configuration in the home directory (agent settings, hooks, skill links, shell startup files) rather than a temporary copy of it;
 - anything else outside the disposable space: a message or alert that reaches a person, a paid call to an outside service, a write elsewhere on the machine.
+
+A throwaway container also counts as disposable, on Docker or Podman, although the engine keeps it outside the scratchpad and temp directories. It qualifies when all of these hold:
+
+- this run starts it;
+- it publishes no host port;
+- it mounts only disposable space or a volume this run created, so no real data, no shared home-directory configuration and no live checkout (copy the files into disposable space or into the image instead);
+- it joins only a network this run created, or none; the engine's default network counts as one a running service may use;
+- it runs unprivileged: no `--privileged`, no added capabilities, no host devices;
+- this run removes it, with every network and volume it created, when step 5 ends, pass or fail.
+
+Images pulled or built for it may stay. The engine storing it is not "a write elsewhere on the machine".
 
 **A disposable test needs no approval.** Design it, record it in the issue's ledger (or the final report for spec work), run it at step 5, and carry on without asking.
 
@@ -66,7 +78,7 @@ Issue work requires a tracker the repo's instructions name and working access to
 
 ## 3. Implement and check
 
-Implement the agreed work without reopening its design. Call the Skill tool with "tdd" where possible at pre-agreed seams. A bug whose ledger records a reproduction starts its fix from that reproduction, with no fresh one first; the failing test the fix begins from is part of the fix. As you go, run the quick checks: typechecking, the formatter and linter where they are fast, and the focused tests around the change.
+Implement the agreed work without reopening its design. Call the Skill tool with "tdd" where possible. Where the issue or spec already records the seams under test, use those. Otherwise choosing them is your call in this run, not a question for the user. Either way, before the first test, write the seams in the issue's ledger (or the final report for spec work) and carry on. That record is the agreement `tdd` asks for, so do not stop to confirm it. A bug whose ledger records a reproduction starts its fix from that reproduction, with no fresh one first; the failing test the fix begins from is part of the fix. As you go, run the quick checks: typechecking, the formatter and linter where they are fast, and the focused tests around the change.
 
 This step ends when the quick checks pass. The full test suite does not run in this step, and neither does any repository-required validation: both wait for step 4, after the review fixes.
 
@@ -95,7 +107,7 @@ The step ends when one full run has passed on a tree that did not change during 
 
 On the docs-only path, skip this step: record in the ledger that the live pass was skipped because the change is docs-only, and go to step 6.
 
-Once step 4's full run has passed, start or reach the live test environment step 1 settled: the documented one, the disposable one you designed, or the one the user approved. Exercise the changed behaviour through the app's real public interface and verify every applicable acceptance criterion. Record the commands, paths, URLs, or other evidence used. When the pass ends, pass or fail, remove any disposable space this run created for it, stop its fixture processes by their saved PIDs, and record that in the ledger.
+Once step 4's full run has passed, start or reach the live test environment step 1 settled: the documented one, the disposable one you designed, or the one the user approved. Exercise the changed behaviour through the app's real public interface and verify every applicable acceptance criterion. Record the commands, paths, URLs, or other evidence used. When the pass ends, pass or fail, remove any disposable space this run created for it, stop its fixture processes by their saved PIDs, remove its throwaway containers with the networks and volumes they created, and record that in the ledger.
 
 If live acceptance exposes a defect, fix it with the quick checks and return to step 4 before repeating live acceptance. The final live pass must exercise the reviewed code. On the full-run path, a failed or skipped live pass blocks every remaining step.
 

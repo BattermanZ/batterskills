@@ -35,7 +35,7 @@ These are the same gates `/implement` holds for one ticket, held here for the wh
 
 4. Claim each ticket as it leaves the frontier, then use **implementer subagents** to implement it, each in its own worktree on its own branch. Each implementer subagent:
    - confirms its worktree is based on the integration branch before starting, and resets onto it if not;
-   - calls the Skill tool with `tdd` to build the ticket;
+   - calls the Skill tool with `tdd` to build the ticket, under `/implement-spec`, at the seams [`/implement` step 3](../implement/SKILL.md) settles with no stop to ask the user, and names them in its report; you copy each ticket's seams into the final report;
    - runs the quick checks as it goes, and has them passing before reporting done: typechecking, the formatter and linter where they are fast, and the focused tests around its ticket. It does not run the full suite or any repository-required validation: both wait for step 7;
    - merges the integration branch tip into its own branch before reporting done
 
@@ -61,7 +61,7 @@ These are the same gates `/implement` holds for one ticket, held here for the wh
 
 8. On the docs-only path, skip this step: record in the final report that the live pass was skipped because the change is docs-only, and go to step 9.
 
-   Otherwise, run final live acceptance yourself, not through a subagent. Start or reach the live test environment the guardrails settled, on the integration branch: the documented one, the disposable one you designed, or the one the user approved. Exercise the changed behaviour through the app's real public interface and verify every acceptance criterion of every ticket. Record the commands, paths, URLs, or other evidence used. When the pass ends, pass or fail, remove any disposable space this run created for it, stop its fixture processes by their saved PIDs, and record that in the final report. If the live pass exposes a defect, fix it through an implementer subagent and return to step 7 before repeating it: the final live pass must exercise the reviewed code. On the full-run path, a failed or skipped live pass blocks every remaining step.
+   Otherwise, run final live acceptance yourself, not through a subagent. Start or reach the live test environment the guardrails settled, on the integration branch: the documented one, the disposable one you designed, or the one the user approved. Exercise the changed behaviour through the app's real public interface and verify every acceptance criterion of every ticket. Record the commands, paths, URLs, or other evidence used. When the pass ends, pass or fail, remove any disposable space this run created for it, stop its fixture processes by their saved PIDs, remove its throwaway containers with the networks and volumes they created, and record that in the final report. If the live pass exposes a defect, fix it through an implementer subagent and return to step 7 before repeating it: the final live pass must exercise the reviewed code. On the full-run path, a failed or skipped live pass blocks every remaining step.
 
 9. Tick each ticket's implementation and acceptance checkboxes, wherever the brief sits, only where the live-pass evidence proves them, or, on the docs-only path, the text checks and the diff. Fetch each ticket again and verify every required checkbox is checked; any unchecked required item blocks the release.
 
