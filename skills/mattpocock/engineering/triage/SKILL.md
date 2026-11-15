@@ -62,6 +62,8 @@ Query the issue tracker and present three buckets, oldest first:
 2. **`needs-triage`**: evaluation in progress.
 3. **`needs-info` with reporter activity since the last triage notes**: needs re-evaluation.
 
+Leave out standing logs: issues a job keeps open and writes to, such as a dependency dashboard or a rolling report. They are not tickets. The repo's tracker instructions name the label that marks them; skip every issue carrying it, and never give one a triage role.
+
 When PRs are in scope, include external PRs in these buckets and tag each line `[PR]` or `[issue]`. Discovery surfaces only *external* PRs (the repo's tracker instructions define who counts as external), so a collaborator's in-flight PR is not triage work. This filter is discovery-only; an explicitly named PR is always triaged regardless of author.
 
 Show counts and a one-line summary per item. Let the maintainer pick.
