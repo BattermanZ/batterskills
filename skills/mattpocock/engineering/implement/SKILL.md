@@ -113,9 +113,11 @@ The step ends when one full run has passed on a tree that did not change during 
 
 ## 5. Run final live acceptance
 
-On the docs-only path, skip this step: record in the ledger that the live pass was skipped because the change is docs-only, and go to step 6.
+On the docs-only path, skip this step, apart from its rule below for a criterion only later outside state can prove: record in the ledger that the live pass was skipped because the change is docs-only, and go to step 6.
 
 Once step 4's full run has passed, start or reach the live test environment step 1 settled: the documented one, the disposable one you designed, or the one the user approved. Exercise the changed behaviour through the app's real public interface and verify every applicable acceptance criterion. Record the commands, paths, URLs, or other evidence used. When the pass ends, pass or fail, remove any disposable space this run created for it, stop its fixture processes by their saved PIDs, remove its throwaway containers with the networks and volumes they created, and record that in the ledger.
+
+**A criterion only later outside state can prove is not waited for here.** When a criterion depends on outside state this run's own action did not set off, or that is not certain within about 30 minutes (a scheduled job's next run, a timer, a result that may never come), check it once now. If it is not settled, hand it to a `follow-up add --check` card that says what to do for each outcome, record the card's link in the ledger, and carry on with the run. On a Forgejo tracker the card names the issue with `--ticket <owner>/<repo>#<n>` and the box stays unticked, for the card's check to tick before it closes the issue. `--ticket` reaches only Forgejo, so on any other tracker tick the box with a note naming the card, and the card files a new ticket if the outcome is bad. When a card already covers the criterion, start no watch at all. This is the global waiting rule ("Wait in the session for two things only") where that file is loaded. The deploy pipeline that step 6's push sets off stays a post-push check, run after that push as the repo's gates say.
 
 If live acceptance exposes a defect, fix it with the quick checks and return to step 4 before repeating live acceptance. The final live pass must exercise the reviewed code. On the full-run path, a failed or skipped live pass blocks every remaining step.
 
@@ -124,7 +126,7 @@ If live acceptance exposes a defect, fix it with the quick checks and return to 
 For issue work:
 
 1. Check off each implementation or acceptance checkbox only when the live-pass evidence proves it complete, or, for docs-only work, the text checks and the diff. The checkboxes sit wherever the brief does, a comment as readily as the body; tick them in place there.
-2. Fetch the issue again, comments included, and verify every required checkbox is checked. Any unchecked required item blocks the release.
+2. Fetch the issue again, comments included, and verify every required checkbox is checked. Any unchecked required item blocks the release, except one step 5 handed to a card: it blocks only the close, which that card's check does.
 
 Then inspect the final diff, commit only the intended work to the current branch, push that branch, and verify the remote contains the commit. Follow all repository-specific commit, push, deployment, and post-push validation gates in `AGENTS.md`.
 
@@ -137,15 +139,17 @@ If the work sits on a branch other than the default branch, merge it in and dele
 
 Where the repo's instructions require a different landing path, such as merging only through a reviewed pull request, follow them instead and report what is left for a human.
 
-Close the issue, the way the tracker closes work, only after validation, checkbox completion, commit, push, the merge and branch deletion, and any required post-push checks have all succeeded. Fetch it once more and verify it is closed. On any failure, leave the issue open and report the exact blocking gate.
+When a Forgejo card holds a box, push but leave the issue open for the card to close, and report the card's link. Inside a ticket-queue run, write `halted card: <card link> holds <criterion>` instead of `shipped`, since the queue counts a ticket as shipped only when it is closed.
+
+Otherwise close the issue, the way the tracker closes work, only after validation, checkbox completion, commit, push, the merge and branch deletion, and any required post-push checks have all succeeded. Fetch it once more and verify it is closed. On any failure, leave the issue open and report the exact blocking gate.
 
 ## 7. Hand on the follow-ups
 
-Once the work has shipped, hand every follow-up filed during this run to an agent, without asking. The user has approved this once for all follow-ups, so a question about one is never asked.
+Once the work has shipped (pushed, a ticket a card holds included), hand every follow-up filed during this run to an agent, without asking. The user has approved this once for all follow-ups, so a question about one is never asked.
 
 For each one, replace its awaiting-approval label with the repo's `ready-for-agent` label and fetch it back to confirm the label. Then:
 
-- **Inside a ticket-queue run** (its prompt names a status file), relabel before writing the `shipped` line, because the queue closes the pane once it reads that line. The label is the hand-off: a queue choosing its own tickets takes each one in its turn. Start no second queue on the same checkout. A queue given named issues never chooses, so the report also gives `ticket-queue <count> <N…>` for after it ends.
+- **Inside a ticket-queue run** (its prompt names a status file), relabel before writing the `shipped` or `halted card:` line, because the queue closes the pane once it reads that line. The label is the hand-off: a queue choosing its own tickets takes each one in its turn. Start no second queue on the same checkout. A queue given named issues never chooses, so the report also gives `ticket-queue <count> <N…>` for after it ends.
 - **Otherwise, from a Herdr pane** (`HERDR_ENV=1`) in a repo ticket-queue serves (origin on GitHub or on `forgejo.batterlan.cc`, as Kamosu, Hatchdoor and batterlab are): call the Skill tool with "herdr", split a new pane in the checkout, and once the checkout is back on its integration branch with a clean tree, run `ticket-queue <count> <N…>` there, naming every follow-up. The step ends when that pane shows the queue's line for the first one, `[queue <time>] #<N> (pile named): <title>`.
 - **Otherwise**, the report gives `ticket-queue <count> <N…>` to run from a Herdr pane in the checkout, or `/implement <N>` for each in a fresh session where ticket-queue does not serve the repo.
 
