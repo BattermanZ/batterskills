@@ -139,7 +139,7 @@ If the work sits on a branch other than the default branch, merge it in and dele
 
 Where the repo's instructions require a different landing path, such as merging only through a reviewed pull request, follow them instead and report what is left for a human.
 
-When a Forgejo card holds a box, push but leave the issue open for the card to close, and report the card's link. Inside a ticket-queue run, write `halted card: <card link> holds <criterion>` instead of `shipped`, since the queue counts a ticket as shipped only when it is closed.
+When a Forgejo card holds a box, push but leave the issue open for the card to close, and report the card's link. Inside a ticket-queue run, write `carded <commit> <card link>` instead of `shipped`, once the commit is on origin and the issue names the card's link, since `shipped` needs a closed issue.
 
 Otherwise close the issue, the way the tracker closes work, only after validation, checkbox completion, commit, push, the merge and branch deletion, and any required post-push checks have all succeeded. Fetch it once more and verify it is closed. On any failure, leave the issue open and report the exact blocking gate.
 
@@ -149,7 +149,7 @@ Once the work has shipped (pushed, a ticket a card holds included), hand every f
 
 For each one, replace its awaiting-approval label with the repo's `ready-for-agent` label and fetch it back to confirm the label. Then:
 
-- **Inside a ticket-queue run** (its prompt names a status file), relabel before writing the `shipped` or `halted card:` line, because the queue closes the pane once it reads that line. The label is the hand-off: a queue choosing its own tickets takes each one in its turn. Start no second queue on the same checkout. A queue given named issues never chooses, so the report also gives `ticket-queue <count> <N…>` for after it ends.
+- **Inside a ticket-queue run** (its prompt names a status file), relabel before writing the `shipped` or `carded` line, because the queue closes the pane once it reads that line. The label is the hand-off: a queue choosing its own tickets takes each one in its turn. Start no second queue on the same checkout. A queue given named issues never chooses, so the report also gives `ticket-queue <count> <N…>` for after it ends.
 - **Otherwise, from a Herdr pane** (`HERDR_ENV=1`) in a repo ticket-queue serves (origin on GitHub or on `forgejo.batterlan.cc`, as Kamosu, Hatchdoor and batterlab are): call the Skill tool with "herdr", split a new pane in the checkout, and once the checkout is back on its integration branch with a clean tree, run `ticket-queue <count> <N…>` there, naming every follow-up. The step ends when that pane shows the queue's line for the first one, `[queue <time>] #<N> (pile named): <title>`.
 - **Otherwise**, the report gives `ticket-queue <count> <N…>` to run from a Herdr pane in the checkout, or `/implement <N>` for each in a fresh session where ticket-queue does not serve the repo.
 
