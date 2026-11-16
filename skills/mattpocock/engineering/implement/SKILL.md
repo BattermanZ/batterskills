@@ -6,6 +6,14 @@ disable-model-invocation: true
 
 Implement exactly one issue or spec through to a pushed commit. For issue work, the issue is the completion ledger.
 
+## Running without questions, and running now
+
+**"Stop asking" means carry on to the end.** When the user says to stop asking, or that nothing needs their approval until the end, keep working through step 6 (and step 7 where it applies) with no further questions: take your recommended default on each open point and record it in the issue's ledger, or the final report for spec work. The ticket, its branch and its work are kept until step 6 ships them. Abandoning the ticket, or deleting its branch or work, takes the user's explicit "stop", "abandon" or "drop this ticket".
+
+That instruction answers questions; it grants no gate. A test procedure that touches a real system, a ticket someone else holds and a production environment still need the user's explicit approval, and a gate that stops (a dirty worktree, failed tracker access, a failed check or live pass, a merge conflict) still stops and reports.
+
+**Every step runs now.** When a step looks better run at another time (at night, off-peak, later), say so in one line and run it now. It waits only when the user or the repo's instructions say to wait.
+
 ## Work found outside the ticket
 
 Anything the work turns up that needs doing but lies outside the issue or spec is a follow-up: a defect, or work the change made due, such as a release step or a caller that depends on what changed. File each follow-up yourself as soon as it is clear, at any step; the final report names what you filed.
