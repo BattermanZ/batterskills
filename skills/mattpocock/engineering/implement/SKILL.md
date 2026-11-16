@@ -68,7 +68,7 @@ Anything else is a stop: ask the user to resolve or explicitly include the pre-e
 ## 2. Resolve and claim the work
 
 - **An issue was supplied:** fetch it from the repo's tracker and confirm its title and repository. If it already has any assignee, require the user's explicit green light for that assigned issue; invoking this skill alone is not that green light.
-- **No work was supplied:** list the tracker's open issues carrying the `ready-for-agent` label. Exclude assigned issues and issues with open blockers, then choose the oldest eligible issue (lowest issue number). Stop if none is available.
+- **No work was supplied:** list the tracker's open issues carrying the `ready-for-agent` label, one line per issue rather than every body: `forgejo list --label ready-for-agent --brief` on Forgejo, which also marks open blockers and a body parked with `> **Do not start yet.**`; on GitHub, `gh issue list --state open --limit 1000 --json number,title,labels,assignees` filtered by label name yourself, since `gh`'s `--label` filter has missed issues. Exclude assigned issues, issues with open blockers and parked issues, then choose the oldest eligible issue (lowest issue number). On GitHub that listing shows neither blockers nor the parking line, so read the candidate with `gh issue view` before claiming it and move to the next one if either applies. Stop if none is available.
 - **The chosen issue is unassigned:** assign it to yourself, the way the tracker assigns work, before editing code, then fetch it again and verify the assignment succeeded.
 - **A spec with no issue was supplied:** continue without issue actions.
 
