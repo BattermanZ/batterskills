@@ -145,6 +145,10 @@ For skills and `AGENTS.md`, use `/writing-for-agents` (under Standalone).
 
 - **`/print-page`**: send a PDF and say "print page", and it lands on print.battercloud.cc behind your password, ready to open and print on a shop computer with no phone or USB stick. It checks the page from outside before handing you the address, removes the file when you say it's printed, and the page deletes anything older than 24 hours anyway. It runs from a Claude Code session on BatterCode, which can reach batterdock.
 
+### 3D printing
+
+- **`/bambu-studio`**: get a 3mf or MakerWorld model ready to print on your X2D. It reads the project file for each plate's parts, inlays and the designer's settings, reads your AMS from Bambu Studio's screen, proposes only the changes that help the parts on that plate, and proves each one in the sliced preview. Settings on the X2D are project-wide, so it hands you a revert list after each send. Sending the print stays with you.
+
 ### Building UI
 
 - **`/frontend-design`**: visual direction for a new UI or a reshaped one. It plans a small token system first (palette, type, layout, one signature element), checks that plan against the three looks AI-made design keeps landing on, and builds only once the plan is specific to your brief. A throwaway UI that answers a design question is `/prototype` instead.
