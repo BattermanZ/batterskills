@@ -126,8 +126,19 @@ If live acceptance exposes a defect, fix it with the quick checks and return to 
 
 For issue work:
 
-1. Check off each implementation or acceptance checkbox only when the live-pass evidence proves it complete, or, for docs-only work, the text checks and the diff. The checkboxes sit wherever the brief does, a comment as readily as the body; tick them in place there.
-2. Fetch the issue again, comments included, and verify every required checkbox is checked. Any unchecked required item blocks the release, except one step 5 handed to a card: it blocks only the close, which that card's check does.
+1. Check off each implementation or acceptance checkbox only when the live-pass evidence proves it complete, or, for docs-only work, the text checks and the diff. The checkboxes sit wherever the brief does, a comment as readily as the body; tick them in place there: save that text to a file, edit it, and write it back the tracker's way. Tick one proved box per command, matched by its whole text as a fixed string, so every other box keeps its state, a box a card holds on Forgejo included. A pattern that ticks every box at once is never the form:
+
+   ```sh
+   awk -v box='Retries stop after three attempts' '{ t = $0; sub(/^[ \t]*[-*+] \[ \] /, "", t) } t == box { sub(/\[ \]/, "[x]") } 1' body.md > body.tmp && mv body.tmp body.md
+   ```
+
+2. Fetch the issue again, comments included, and verify every required checkbox is checked. Count the unticked boxes in that fetched text, body and comments both, with a command that exits 0 at any count, so zero left reads as success:
+
+   ```sh
+   grep -cE '^[[:space:]]*[-*+] \[ \]' fetched.md || true
+   ```
+
+   Every required box the count finds blocks the release, except one step 5 handed to a card: it blocks only the close, which that card's check does.
 
 Then inspect the final diff, commit only the intended work to the current branch, push that branch, and verify the remote contains the commit. Follow all repository-specific commit, push, deployment, and post-push validation gates in `AGENTS.md`.
 
