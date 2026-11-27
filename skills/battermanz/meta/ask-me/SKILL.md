@@ -3,7 +3,7 @@ name: ask-me
 description: Ask which skill or flow fits your situation. A router over the batterskills catalogue.
 disable-model-invocation: true
 metadata:
-  version: "1.8.8"
+  version: "1.8.9"
 ---
 
 # Ask me
@@ -148,7 +148,7 @@ For skills and `AGENTS.md`, use `/writing-for-agents` (under Standalone).
 ### 3D printing
 
 - **`/bambu-studio`**: get a 3mf or MakerWorld model ready to print on your X2D. It reads the project file for each plate's parts, inlays and the designer's settings, reads your AMS from Bambu Studio's screen, proposes only the changes that help the parts on that plate, and proves each one in the sliced preview. Settings on the X2D are project-wide, so it hands you a revert list after each send. Sending the print stays with you.
-- **`/cad`**: describe a part you want printed, with caliper measurements, and it builds the part as a FreeCAD file whose every step and dimension you can open and change. You get pictures from four sides plus a cut-through, and a table comparing what you asked for with what the part has. It also reads a file you edited by hand, and answers FreeCAD how-to questions for the version you run.
+- **`/cad`**: describe a part you want printed, with caliper measurements, and it builds the part and checks it against them. You get pictures from four sides plus a cut-through, and a table comparing what you asked for with what the part has, saying which numbers were measured on the finished shape. The program (FreeCAD) and the way a part is built (every step open to you in the file) are both still candidates. It also reads a file you edited by hand, and answers FreeCAD how-to questions for the version you run.
 
 ### Building UI
 
