@@ -1,8 +1,8 @@
 ---
 name: cad
-description: "Design or change a part for the user's 3D printer. Use when the user asks for a part, mount, holder or adapter to be designed, modelled or resized, wants a FreeCAD file they edited by hand checked, or asks how to do something in FreeCAD."
+description: "Design or change a part for the user's 3D printer. Use when the user asks for a part, mount, holder or adapter to be designed, modelled or resized, wants a logo, text or picture turned into a printable model, wants a FreeCAD file they edited by hand checked, or asks how to do something in FreeCAD."
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # CAD: parts for the 3D printer
@@ -11,7 +11,7 @@ The parts and the toolkit live in the `battercad` repo, checked out at `~/coding
 
 ## Steps
 
-1. **Read `~/coding/battercad/AGENTS.md`.** When the checkout is missing, `~/.claude/docs/repos.md` names its remote. Its "Candidates" section says whether a trial of the two build routes is still owed: when it is, the part you were asked for is the trial.
+1. **Read `~/coding/battercad/AGENTS.md`.** When the checkout is missing, `~/.claude/docs/repos.md` names its remote. Its "Candidates" section says whether a trial of the two build routes is still owed, and which part it falls on.
 
 2. **Write the brief.** `parts/<name>/brief.md` holds what the part is for, what it must fit, and every measurement, in the user's words. The user measures with a caliper: ask for one measurement at a time, and only for those the part cannot be built without. Done when every dimension the part needs has a number from the user or a default you stated.
 
