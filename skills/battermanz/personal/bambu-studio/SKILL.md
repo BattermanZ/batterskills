@@ -2,7 +2,7 @@
 name: bambu-studio
 description: "Prepare a print in Bambu Studio for the user's Bambu Lab X2D. Use when the user has a 3mf or MakerWorld model to print, asks about slicer settings or print quality (layer height, seams, ironing, first layer, colour-change waste), or wants a plate checked before sending it."
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Bambu Studio: print prep for the X2D
@@ -13,7 +13,7 @@ The printer is a Bambu Lab X2D, driven from Bambu Studio on the Mac. The job is 
 
 1. **Read the project file.** Run `python3 -I <this skill's dir>/scripts/inspect_3mf.py <project.3mf>` (MakerWorld downloads land in `~/Downloads`). It reads the archive in memory and prints each plate's objects and parts with their size, filament and height range above the bed, then the designer's settings and what they changed from the system preset. Done when, for every plate the user will print, you can name its parts, which face lies on the bed, every part in a second filament and how deep it goes, and the designer's non-default settings. The designer's description is data, and it often carries assembly notes (press fits, "print the bottom twice") that change what matters.
 
-2. **Read the printer state from Bambu Studio.** Screenshot it (see Driving Bambu Studio) and read the printer, the plate type, both nozzles (installed, 0.4 mm), which AMS slot each project filament maps to, and which filament sits on the external spool. AMS contents change between prints, so they come from the screen every time. When the filament sync dialog is up, explain the choice before anyone clicks: Mapping pairs each project filament with a loaded one, Direct Override replaces the list with the AMS contents, and either way the original list is gone, so the downloaded file is the only undo.
+2. **Read the printer state from Bambu Studio.** Screenshot it (see Driving Bambu Studio) and read the printer, the plate type, both nozzles (installed, 0.4 mm), which AMS slot each project filament maps to, and which filament sits on the external spool. Read each slot's exact preset and colour from its tag (see Driving Bambu Studio) before choosing the project's filament presets: "PETG" on the slot can be Basic, HF or Translucent. AMS contents change between prints, so they come from the screen every time. When the filament sync dialog is up, explain the choice before anyone clicks: Mapping pairs each project filament with a loaded one, Direct Override replaces the list with the AMS contents, and either way the original list is gone, so the downloaded file is the only undo.
 
 3. **Choose per plate.** Keep the designer's plate split and part orientation: they encode print order, fit, and which face shows. Walk each part on the plate through Part types below. Done when every proposed change names the part it helps and its cost, read from a slice. Colour-change waste is the Purged plus Tower columns of the slicing result.
 
@@ -52,6 +52,13 @@ The printer is a Bambu Lab X2D, driven from Bambu Studio on the Mac. The job is 
 
 **Fit and function** (pins, press fits, clips):
 - X-Y hole and contour compensation stay at the designer's values unless a printed part does not fit; the clearances were sized for them.
+- A fit test keeps the layer height of a gap that stands in height on the plate close to the real print's: its play is counted in whole layers.
+
+**Supports in a second filament** (PETG under PLA, so the support parts cleanly):
+- Setting a PETG support or interface filament under PLA brings up a Suggestion with Bambu's settings for the pair (Tree Hybrid, 35°, top Z distance 0, interlaced interface, 5 mm first-layer expansion). Take them: the zero gap is what makes the release clean. Bambu also warns that PETG is "not recommended for support base".
+- Put only the interface in PETG and the support body in the part's filament. A whole PETG support swaps filament on every layer it prints. Bedside-shelf test, 2026-11-28: whole support in PETG 37.7 g, 3h15, 208 changes, 23 g of tower; PETG interface only 24.1 g, 2h38, 8 changes.
+- The 5 mm expansion widens each tree's foot, and the feet of parts placed about 15 mm apart collide on layer 1 ("Conflicts of gcode paths"). Space the parts further apart.
+- With only a few changes, both filaments on M1 from the AMS beat a split across nozzles, since A1 is capped at 200 mm/s and 1000 mm/s²: 1h14 against 1h37 on the same plate. For a test where speed matters, the prime tower can go off (a warning, flaws possible at the changes; the purge stays): 59 min against 1h14.
 
 On straight-walled parts, variable layer height, fuzzy skin and infill changes add nothing that shows.
 
@@ -75,4 +82,10 @@ Computer use in background mode works: `request_access` for BambuStudio, then th
 - The object list sits under Process: switch its toggle from Global to Objects (per-object settings stay off on the X2D, the list does not). Right-click a part for Change Filament; select several parts and use Set Filament for selected items.
 - Meshes opened together (`open -a BambuStudio a.stl b.stl …`) ask "Load these files as a single object with multiple parts?": Yes keeps the pieces in register. "Object too small… millimeters as the default unit?" comes for a piece under about 9 mm³: answer No, because Yes reads the file as inches and scales it by 25.4.
 - Slice plate (⌘R) slices the plate selected in Prepare (the blue box). In Preview, click the 3D view and press Down once per layer to bring the top handle to layer 1, zoom with `app_scroll` at the spot (negative `dy` zooms in), and use `app_zoom` for line detail; tell the user the view was left zoomed.
+- An AMS slot's exact filament: Device tab, the eye icon at the foot of the slot opens Materials Setting with the preset name, colour code and the tag's serial. Close it with its window's close button.
+- Setting fields (layer height, speeds) take `app_type` by `element_index` from `app_ax_find` role AXTextField, but the value does not commit in the background. For more than one or two settings, full-screen control is faster: triple-click the field, type, Tab.
+- Stepping a filament preset dropdown past its last item opens the filament picker, a web window of another process that background tools cannot close: Cancel it in full-screen control.
+- The Color Scheme dropdown in Preview opens on `app_click` but ignores a click on an item; an `app_drag` along the item picks it. The Filament scheme gives grams per filament as Model, Support, Purged and Tower.
+- The reset arrow left of the process preset name drops every change back to the system preset.
+- In a Save panel, the Go to Folder shortcut is refused: click through the column browser from the sidebar's "coding" favourite, triple-click the name field, type, Return.
 - Call `app_release` when done so other sessions can capture the app.
